@@ -1,11 +1,14 @@
 package com.sep.backend_noAuth.controller.DeliveryManagerController;
 
+import com.sep.backend_noAuth.dto.DeliveryManagerDTO.AddressResponse;
+import com.sep.backend_noAuth.dto.OptRoutePOST;
+import com.sep.backend_noAuth.entity.User;
 import com.sep.backend_noAuth.service.DistanceMatrixService;
+import com.sep.backend_noAuth.service.TspService;
+import com.sep.backend_noAuth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,6 +21,13 @@ public class DistanceMatrixController {
 
     @Autowired
     private DistanceMatrixService distanceMatrixService;
+
+    @Autowired
+    private TspService tspService;
+    @Autowired
+    private UserService userService;
+
+
 
     public DistanceMatrixController(DistanceMatrixService distanceMatrixService) {
         this.distanceMatrixService = distanceMatrixService;
@@ -40,4 +50,25 @@ public class DistanceMatrixController {
         List<Map<String,Double>> destinations = Arrays.asList(destination1,destination2);
         return distanceMatrixService.getDistanceMatrix(origin,destinations);
     }
+
+    @PostMapping("/post-matrix")
+    public String getDistanceMatrix(@RequestBody OptRoutePOST optRoutePOST) throws Exception {
+        int[][] matrix = optRoutePOST.getMatrix();
+        List<String> addresses = optRoutePOST.getAddresses();
+        int vehicleNumber = 1;
+        int startLocationIndex = 0;
+
+        TspService.DataModel dataModel = new TspService.DataModel(matrix,vehicleNumber,startLocationIndex);
+        return tspService.solveTsp(dataModel);
+    }
+
+    @GetMapping("/list-postman")
+    public List<User> getListOfPostman(){
+        return userService.getListOfPostman();
+    }
+
+//    public AddressResponse getAddressResponse(@RequestBody List<String> addressIdList){
+//
+//    }
+
 }

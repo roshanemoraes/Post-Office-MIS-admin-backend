@@ -17,4 +17,5 @@ public class PostageController {
         Postage postage = postageService.findPostageByWeight(weight);
         return postage;
     }
+
 }

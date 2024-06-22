@@ -45,6 +45,11 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.google.ortools</groupId>
+			<artifactId>ortools-java</artifactId>
+			<version>9.10.4067</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -10,8 +10,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class NormalPost {
-    String recipientHouseNumber;
     String recipientName;
-    
+    String recipientHouseNumber;
+    String recipientPostalZone;
+    String recipientCity;
+    String recipientAddress;
 
+    String senderName;
+    String senderHouseNumber;
+    String senderPostalZone;
+    String senderCity;
+    String senderAddress;
 }

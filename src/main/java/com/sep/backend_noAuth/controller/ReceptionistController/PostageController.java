@@ -14,7 +14,7 @@ public class PostageController {
 
     @GetMapping("/getPostage")
     public Postage getPostageForWeight(@RequestParam Double weight){
-        Postage postage = postageService.findPostageByWeight(weight);
+        Postage postage = postageService.findPostageByWeight(weight);;
         return postage;
     }
 

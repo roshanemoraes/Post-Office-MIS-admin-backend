@@ -1,4 +1,4 @@
-package com.sep.backend_noAuth.controller.ReceptionistController;
+package com.sep.backend_noAuth.controller.Receptionist;
 
 import com.sep.backend_noAuth.dto.PostTypes.NormalPost;
 import org.springframework.http.ResponseEntity;

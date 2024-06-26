@@ -1,4 +1,4 @@
-package com.sep.backend_noAuth.controller.PostmasterController;
+package com.sep.backend_noAuth.controller.Postmaster;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

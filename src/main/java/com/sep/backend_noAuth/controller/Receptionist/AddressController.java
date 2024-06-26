@@ -1,14 +1,11 @@
-package com.sep.backend_noAuth.controller.ReceptionistController;
+package com.sep.backend_noAuth.controller.Receptionist;
 
 import com.sep.backend_noAuth.dto.AddressRequest;
 import com.sep.backend_noAuth.entity.Address;
 import com.sep.backend_noAuth.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/receptionist/address")

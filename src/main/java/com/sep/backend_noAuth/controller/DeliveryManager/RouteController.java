@@ -1,4 +1,4 @@
-package com.sep.backend_noAuth.controller.DeliveryManagerController;
+package com.sep.backend_noAuth.controller.DeliveryManager;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

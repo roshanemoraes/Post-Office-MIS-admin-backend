@@ -1,4 +1,4 @@
-package com.sep.backend_noAuth.repository.PostageRepository;
+package com.sep.backend_noAuth.repository.Postage;
 
 import com.sep.backend_noAuth.entity.Postage;
 import org.springframework.data.mongodb.repository.MongoRepository;

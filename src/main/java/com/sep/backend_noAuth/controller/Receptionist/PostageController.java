@@ -1,6 +1,5 @@
-package com.sep.backend_noAuth.controller.ReceptionistController;
+package com.sep.backend_noAuth.controller.Receptionist;
 
-import com.sep.backend_noAuth.dto.PostageRequest;
 import com.sep.backend_noAuth.entity.Postage;
 import com.sep.backend_noAuth.service.PostageService;
 import org.springframework.beans.factory.annotation.Autowired;

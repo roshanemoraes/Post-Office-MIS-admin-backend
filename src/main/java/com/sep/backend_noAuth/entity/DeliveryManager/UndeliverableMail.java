@@ -3,6 +3,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -12,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "undeliverable-mails")
 public class UndeliverableMail {
+    @Id
     String mailId;
     String status;
     String type;

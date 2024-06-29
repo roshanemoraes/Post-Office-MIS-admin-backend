@@ -7,4 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UndeliverableMailRepository extends MongoRepository<UndeliverableMail,String> {
+    List<UndeliverableMail> findByStatus(String status);
+    UndeliverableMail findByMailId(String mailId);
 }

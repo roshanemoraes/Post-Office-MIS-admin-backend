@@ -1,4 +1,4 @@
-package com.sep.backend_noAuth.entity.DeliveryManager;
+package com.sep.backend_noAuth.entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +11,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Builder
 
-@Document(collection = "undeliverable-mails")
+@Document(collection = "Undeliverable-mail")
 public class UndeliverableMail {
     @Id
+    String undeliverableId;
     String mailId;
+    String customer_id;
     String status;
     String type;
     String zone;

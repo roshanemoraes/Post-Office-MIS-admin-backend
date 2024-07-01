@@ -1,12 +1,11 @@
 package com.sep.backend_noAuth.controller.DeliveryManager;
 
-import com.sep.backend_noAuth.entity.DeliveryManager.UndeliverableMail;
+import com.sep.backend_noAuth.entity.UndeliverableMail;
 import com.sep.backend_noAuth.repository.UndeliverableMailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,12 +71,12 @@ public class ReturnMailController {
     }
     @GetMapping("/address-update")
     public Optional<List<UndeliverableMail>> getAddressUpdateUndeliveredMails(){
-        List<UndeliverableMail> list = undeliverableMailRepository.findByStatus("Address-Update");
+        List<UndeliverableMail> list = undeliverableMailRepository.findByStatus("Address-Update-Pending");
         return Optional.of(list);
     }
     @PostMapping("/add/return-to-sender")
-    public ResponseEntity<String> addToReturnToSender(@RequestBody String mailId){
-        UndeliverableMail undeliverableMail = undeliverableMailRepository.findByMailId(mailId);
+    public ResponseEntity<String> addToReturnToSender(@RequestBody String undeliverableId){
+        UndeliverableMail undeliverableMail = undeliverableMailRepository.findByUndeliverableId(undeliverableId);
         if(undeliverableMail != null){
             undeliverableMail.setStatus("Return-to-Sender");
             undeliverableMailRepository.save(undeliverableMail);
@@ -87,10 +86,10 @@ public class ReturnMailController {
         }
     }
     @PostMapping("/add/address-update")
-    public ResponseEntity<String> addToAddressUpdate(@RequestBody String mailId){
-        UndeliverableMail undeliverableMail = undeliverableMailRepository.findByMailId(mailId);
+    public ResponseEntity<String> addToAddressUpdate(@RequestBody String undeliverableId){
+        UndeliverableMail undeliverableMail = undeliverableMailRepository.findByUndeliverableId(undeliverableId);
         if(undeliverableMail != null){
-            undeliverableMail.setStatus("Address-Update");
+            undeliverableMail.setStatus("Address-Update-Pending");
             undeliverableMailRepository.save(undeliverableMail);
             return ResponseEntity.ok("Successfully Updated.");
         }else{
@@ -100,7 +99,9 @@ public class ReturnMailController {
     @GetMapping("/add")
     public UndeliverableMail testAdd(){
         UndeliverableMail undeliverableMail = new UndeliverableMail(
+                "6",
                 "137",
+                "6",
                 "Undelivered",
                 "Normal Post",
                 "Pallansena South",

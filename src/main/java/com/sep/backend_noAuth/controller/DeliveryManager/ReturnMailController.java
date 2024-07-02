@@ -60,19 +60,20 @@ public class ReturnMailController {
 //        return Optional.of(list);
 //    }
     @GetMapping("/list-all")
-    public Optional<List<UndeliverableMail>> getAllUndeliveredMails(){
+    public List<UndeliverableMail> getAllUndeliveredMails(){
         List<UndeliverableMail> list = undeliverableMailRepository.findByStatus("Undelivered");
-        return Optional.of(list);
+        return list;
     }
+
     @GetMapping("/return-to-sender")
-    public Optional<List<UndeliverableMail>> getReturnToSenderUndeliveredMails(){
+    public List<UndeliverableMail> getReturnToSenderUndeliveredMails(){
         List<UndeliverableMail> list = undeliverableMailRepository.findByStatus("Return-to-Sender");
-        return Optional.of(list);
+        return list;
     }
     @GetMapping("/address-update")
-    public Optional<List<UndeliverableMail>> getAddressUpdateUndeliveredMails(){
+    public List<UndeliverableMail> getAddressUpdateUndeliveredMails(){
         List<UndeliverableMail> list = undeliverableMailRepository.findByStatus("Address-Update-Pending");
-        return Optional.of(list);
+        return list;
     }
     @PostMapping("/add/return-to-sender")
     public ResponseEntity<String> addToReturnToSender(@RequestBody String undeliverableId){

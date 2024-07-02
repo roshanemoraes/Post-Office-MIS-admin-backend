@@ -1,5 +1,4 @@
 package com.sep.backend_noAuth.dto;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 
-public class PostageRequest {
-    private String weight;
+public class DestinationDto {
+    private String addressId;
+    private double lat;
+    private double lng;
 }

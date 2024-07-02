@@ -1,0 +1,26 @@
+package com.sep.backend_noAuth.controller.Customer;
+
+import com.sep.backend_noAuth.entity.Mail;
+import com.sep.backend_noAuth.repository.MailRepository;
+import com.sep.backend_noAuth.service.MailService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/customer")
+public class CustomerController {
+
+    @Autowired
+    private MailRepository mailRepository;
+
+    @Autowired
+    private MailService mailService;
+
+    @GetMapping("/list/pending/{customerId}")
+    public List<Mail> getAllPendingMails(@PathVariable String customerId){
+        List<Mail> list = mailService.getAllMailsForStatus(customerId,"pending");
+        return list;
+    }
+}

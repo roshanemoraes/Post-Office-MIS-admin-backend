@@ -21,7 +21,7 @@ public class MailService {
 
     public List<Mail> getAllMailsForStatus(String customerId,String status){
         Query query = new Query();
-        query.addCriteria(Criteria.where("customerId").is(customerId));
+        query.addCriteria(Criteria.where("id").is(customerId));
         query.addCriteria(Criteria.where("status").is(status));
         return mongoTemplate.find(query,Mail.class);
     }

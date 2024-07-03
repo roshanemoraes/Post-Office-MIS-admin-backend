@@ -37,8 +37,8 @@ public class CustomerController {
 
     @GetMapping("/list/profile/{customerId}")
     public Customer getProfileInfo(@PathVariable String customerId){
-        Customer profile = customerService.getCustomerInfo(customerId);
-        return profile;
+        Customer customerInfo = customerService.getCustomerInfo(customerId);
+        return customerInfo;
     }
 
 

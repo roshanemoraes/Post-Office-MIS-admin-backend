@@ -1,5 +1,4 @@
-package com.sep.backend_noAuth.dto;
-
+package com.sep.backend_noAuth.entity.Postage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,12 +11,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Builder
 
-@Document(collection = "employee")
-public class Employee {
+@Document(collection = "Postage-Courier-Normal")
+public class PostageCourierNormal {
     @Id
-    private String id;
-    private String name;
-    private String email;
-    private String password;
-    private String roles;
+    String Id;
+    int minWeight;
+    int maxWeight;
+    double price;
 }

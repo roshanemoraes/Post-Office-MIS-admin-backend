@@ -1,5 +1,4 @@
 package com.sep.backend_noAuth.entity;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,11 +11,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Builder
 
-@Document(collection = "postage-normal-post")
-public class Postage {
+@Document(collection = "Undeliverable-mail")
+public class UndeliverableMail {
     @Id
-    String Id;
-    int minWeight;
-    int maxWeight;
-    double price;
+    String undeliverableId;
+    String mailId;
+    String customer_id;
+    String status;
+    String type;
+    String zone;
+    String city;
+    String reason;
+    String deliveredBy;
+    String deliverDate;
 }

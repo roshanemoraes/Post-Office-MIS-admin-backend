@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 
-public class PostageRequest {
-    private String weight;
+public class ShortestRouteAddress {
+    String addressId;
+    String lat;
+    String lng;
 }

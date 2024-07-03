@@ -1,7 +1,0 @@
-package com.sep.backend_noAuth.repository.PostageRepository;
-
-import com.sep.backend_noAuth.entity.Postage;
-import org.springframework.data.mongodb.repository.MongoRepository;
-
-public interface NormalPostPostageRepository extends MongoRepository<Postage,String> {
-}

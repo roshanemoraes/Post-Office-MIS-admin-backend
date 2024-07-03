@@ -21,6 +21,9 @@ public class CustomerController {
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private CustomerService customerService;
+
     @GetMapping("/list/pending/{customerId}")
     public List<Mail> getAllPendingMails(@PathVariable String customerId){
         List<Mail> list = mailService.getAllMailsForStatus(customerId,"pending");
@@ -33,8 +36,8 @@ public class CustomerController {
     }
 
     @GetMapping("/list/profile/{customerId}")
-    public List<Customer> getProfileInfo(@PathVariable String customerId){
-        List<Customer> profile = CustomerService.getCustomerInfo();
+    public Customer getProfileInfo(@PathVariable String customerId){
+        Customer profile = customerService.getCustomerInfo(customerId);
         return profile;
     }
 

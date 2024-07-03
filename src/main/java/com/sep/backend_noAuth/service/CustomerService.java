@@ -19,9 +19,9 @@ public class CustomerService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public static List<Customer> getCustomerInfo(){
+    public Customer getCustomerInfo(String customerId){
         Query query = new Query();
-        query.addCriteria(Criteria.where("UserID").is("1"));
-        return mongoTemplate.find(query, Customer.class);
+        query.addCriteria(Criteria.where("UserID").is(customerId));
+        return mongoTemplate.findOne(query, Customer.class);
     }
 }

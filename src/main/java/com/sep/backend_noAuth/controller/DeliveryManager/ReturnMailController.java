@@ -1,11 +1,15 @@
 package com.sep.backend_noAuth.controller.DeliveryManager;
 
+import com.sep.backend_noAuth.entity.Mail;
 import com.sep.backend_noAuth.entity.UndeliverableMail;
+import com.sep.backend_noAuth.repository.MailRepository;
 import com.sep.backend_noAuth.repository.UndeliverableMailRepository;
+import com.sep.backend_noAuth.service.SequenceGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +19,12 @@ public class ReturnMailController {
 
     @Autowired
     private UndeliverableMailRepository undeliverableMailRepository;
+
+    @Autowired
+    private MailRepository mailRepository;
+
+    @Autowired
+    private SequenceGeneratorService sequenceGeneratorService;
 
 //    @GetMapping("list-all")
 //    public List<Map<String, Object>> getReturnMailList() {
@@ -70,10 +80,50 @@ public class ReturnMailController {
         List<UndeliverableMail> list = undeliverableMailRepository.findByStatus("Return-to-Sender");
         return list;
     }
+    @PostMapping("/return-to-sender/add/{undeliverableId}")
+    public ResponseEntity<String> doForOneMail(@PathVariable String undeliverableId){
+        UndeliverableMail undeliverableMail = undeliverableMailRepository.findByUndeliverableId(undeliverableId);
+        Mail mail = mailRepository.findByMailId(undeliverableMail.getMailId());
+
+        if (mail!=null){
+            Mail newMail = new Mail();
+            newMail.setMailId(String.valueOf(sequenceGeneratorService.getSequenceNumber(Mail.SEQUENCE_NAME)));
+            newMail.setStatus("Pending");
+            newMail.setCustomerId("PO-Return");
+            newMail.setMailType(undeliverableMail.getType());
+            newMail.setDateDelivered("");
+            newMail.setDatePosted(String.valueOf(new Date()));
+            newMail.setRecipientName(mail.getRecipientName());
+            newMail.setDestinationAddress(mail.getDestinationAddress());
+            mailRepository.save(newMail);
+            undeliverableMail.setStatus("Return-to-Sender-Done");
+            undeliverableMailRepository.save(undeliverableMail);
+            return ResponseEntity.ok("Add to Mail Table Success.");
+        }
+        else{
+            return ResponseEntity.notFound().build();
+        }
+    }
     @GetMapping("/address-update")
     public List<UndeliverableMail> getAddressUpdateUndeliveredMails(){
         List<UndeliverableMail> list = undeliverableMailRepository.findByStatus("Address-Update-Pending");
         return list;
+    }
+    @GetMapping("/discarded-mail")
+    public List<UndeliverableMail> getDiscardedMails(){
+        List<UndeliverableMail> list = undeliverableMailRepository.findByStatus("Discarded");
+        return list;
+    }
+    @PostMapping("/add/discarded-mail")
+    public ResponseEntity<String> addToDiscardedMails(@RequestBody String undeliverableId){
+        UndeliverableMail undeliverableMail = undeliverableMailRepository.findByUndeliverableId(undeliverableId);
+        if(undeliverableMail != null){
+            undeliverableMail.setStatus("Discarded");
+            undeliverableMailRepository.save(undeliverableMail);
+            return ResponseEntity.ok("Successfully Updated.");
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
     @PostMapping("/add/return-to-sender")
     public ResponseEntity<String> addToReturnToSender(@RequestBody String undeliverableId){

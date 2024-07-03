@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -14,6 +15,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "Mail")
 public class Mail {
+
+    @Transient
+    public static final String SEQUENCE_NAME = "mail_sequence";
+
     @Id
     private String mailId;
     private String mailType;

@@ -1,8 +1,11 @@
 package com.sep.backend_noAuth.controller.Customer;
 
+import com.sep.backend_noAuth.entity.Customer;
 import com.sep.backend_noAuth.entity.Mail;
 import com.sep.backend_noAuth.repository.MailRepository;
+import com.sep.backend_noAuth.service.CustomerService;
 import com.sep.backend_noAuth.service.MailService;
+import com.sep.backend_noAuth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,5 +31,12 @@ public class CustomerController {
         List<Mail> list = mailService.getAllMailsForStatus(customerId,"delivered");
         return list;
     }
+
+    @GetMapping("/list/profile/{customerId}")
+    public List<Customer> getProfileInfo(@PathVariable String customerId){
+        List<Customer> profile = CustomerService.getCustomerInfo();
+        return profile;
+    }
+
 
 }

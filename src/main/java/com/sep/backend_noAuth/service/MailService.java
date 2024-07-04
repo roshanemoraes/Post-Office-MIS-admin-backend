@@ -25,4 +25,22 @@ public class MailService {
         query.addCriteria(Criteria.where("status").is(status));
         return mongoTemplate.find(query,Mail.class);
     }
+    public List<Mail> getAllPendingMails(){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("status").is("pending"));
+        return mongoTemplate.find(query,Mail.class);
+    }
+
+    public List<Mail> getAllInAreaMails(){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("status").is("pending"));
+        query.addCriteria(Criteria.where("in_area").is(true));
+        return mongoTemplate.find(query,Mail.class);
+    }
+    public List<Mail> getAllOutAreaMails(){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("status").is("pending"));
+        query.addCriteria(Criteria.where("in_area").is(false));
+        return mongoTemplate.find(query,Mail.class);
+    }
 }

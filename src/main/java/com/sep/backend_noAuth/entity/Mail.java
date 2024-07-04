@@ -28,4 +28,8 @@ public class Mail {
     private String recipientName;
     private String datePosted;
     private String dateDelivered;
+    private String zone;
+    private String city;
+    private String addressId;
+    private Boolean in_area;
 }

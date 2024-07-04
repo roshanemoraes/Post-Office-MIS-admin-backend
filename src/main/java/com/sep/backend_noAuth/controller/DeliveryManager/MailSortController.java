@@ -1,6 +1,8 @@
 package com.sep.backend_noAuth.controller.DeliveryManager;
 
-import com.sep.backend_noAuth.dto.AssignDeliveryDto;
+import com.sep.backend_noAuth.dto.AssignDeliveryReqDto;
+import com.sep.backend_noAuth.dto.AssignDeliveryResDto;
+import com.sep.backend_noAuth.entity.Delivery;
 import com.sep.backend_noAuth.entity.Mail;
 import com.sep.backend_noAuth.entity.PostmanAssignment;
 import com.sep.backend_noAuth.repository.PostmanAssignmentRepository;
@@ -10,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -38,13 +43,42 @@ public class MailSortController {
         return mailService.getAllOutAreaMails();
     }
     @GetMapping("/all-postman-assignments")
-    public List<PostmanAssignment> getAllPostmanAssignments(){
-        return postmanAssignmentRepository.findAll();
+    public List<AssignDeliveryResDto> getAllPostmanAssignments(){
+        List<PostmanAssignment> assignments = postmanAssignmentRepository.findAll();
+        int assignmentCount = assignments.size();
+        List<AssignDeliveryResDto> assignDeliveryResDtoList = new ArrayList<>(assignmentCount);
+
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+        String date = currentDate.format(formatter);
+        for (int i=0; i<assignmentCount; i++){
+            PostmanAssignment assignment = assignments.get(i);
+            Delivery delivery = mailSortService.findDeliveryForDateAndPostmanId(date, assignment.getPostmanId());
+            AssignDeliveryResDto dto = new AssignDeliveryResDto();
+
+            dto.setPostmanId(assignment.getPostmanId());
+            dto.setZone(assignment.getZone());
+            dto.setId(assignment.getId());
+            if(delivery==null){
+                dto.setDeliveryId("NA");
+                dto.setStatus("Not Assigned");
+            }else{
+                dto.setDeliveryId(delivery.getDeliveryId());
+                dto.setStatus("Assigned");
+            }
+            assignDeliveryResDtoList.add(i,dto);
+        }
+        return assignDeliveryResDtoList;
     }
 
+//    @GetMapping("/all-postman-assignments")
+//    public List<PostmanAssignment> getAllPostmanAssignments(){
+//        return postmanAssignmentRepository.findAll();
+//    }
+
     @PostMapping("/assign/add")
-    public ResponseEntity<String> createDeliveryRecord(@RequestBody AssignDeliveryDto assignDeliveryDto){
-        mailSortService.createDeliveryObject(assignDeliveryDto.getZone(), assignDeliveryDto.getPostmanId());
+    public ResponseEntity<String> createDeliveryRecord(@RequestBody AssignDeliveryReqDto assignDeliveryReqDto){
+        mailSortService.createDeliveryObject(assignDeliveryReqDto.getZone(), assignDeliveryReqDto.getPostmanId());
         return ResponseEntity.ok("Delivery Record Add Success.");
     }
 

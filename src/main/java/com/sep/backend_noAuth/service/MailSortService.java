@@ -7,9 +7,14 @@ import com.sep.backend_noAuth.entity.Mail;
 import com.sep.backend_noAuth.repository.AddressRepository;
 import com.sep.backend_noAuth.repository.DeliveryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,13 +37,19 @@ public class MailSortService {
     @Autowired
     private MailService mailService;
 
+    @Value("${myapp.custom.zone.count}")
+    private int zoneCount;
+
     public void createDeliveryObject(String zone, int postmanId){
         List<Mail> mailList = mailService.getAllPendingInAreaMailsForZone(zone);
         int listLength = mailList.size();
         Delivery delivery = new Delivery();
         delivery.setDeliveryId(String.valueOf(sequenceGeneratorService.getSequenceNumber(Delivery.SEQUENCE_NAME)));
         delivery.setPostmanId(String.valueOf(postmanId));
-        delivery.setDate(new Date().toInstant().toString());
+
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+        delivery.setDate(currentDate.format(formatter));
         delivery.setVisitOrder("");
         delivery.setZone(zone);
         delivery.setStatus("Assigned");
@@ -60,4 +71,13 @@ public class MailSortService {
         delivery.setDestinations(destinations);
         deliveryRepository.save(delivery);
     }
+
+    public Delivery findDeliveryForDateAndPostmanId(String date, Long postmanId){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("date").is(date));
+        query.addCriteria(Criteria.where("postmanId").is(String.valueOf(postmanId)));
+        return mongoTemplate.findOne(query, Delivery.class);
+    }
+
+
 }

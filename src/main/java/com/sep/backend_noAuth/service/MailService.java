@@ -43,4 +43,11 @@ public class MailService {
         query.addCriteria(Criteria.where("in_area").is(false));
         return mongoTemplate.find(query,Mail.class);
     }
+    public List<Mail> getAllPendingInAreaMailsForZone(String zone){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("status").is("pending"));
+        query.addCriteria(Criteria.where("in_area").is(true));
+        query.addCriteria(Criteria.where("zone").is(zone));
+        return mongoTemplate.find(query,Mail.class);
+    }
 }

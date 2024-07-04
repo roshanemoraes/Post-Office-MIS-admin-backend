@@ -1,25 +1,29 @@
 package com.sep.backend_noAuth.controller.DeliveryManager;
 
+import com.sep.backend_noAuth.dto.AssignDeliveryDto;
 import com.sep.backend_noAuth.entity.Mail;
 import com.sep.backend_noAuth.entity.PostmanAssignment;
 import com.sep.backend_noAuth.repository.PostmanAssignmentRepository;
 import com.sep.backend_noAuth.service.MailService;
+import com.sep.backend_noAuth.service.MailSortService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/delivery-manager/sort")
-public class MailSort {
+public class MailSortController {
 
     @Autowired
     private MailService mailService;
 
     @Autowired
     private PostmanAssignmentRepository postmanAssignmentRepository;
+
+    @Autowired
+    private MailSortService mailSortService;
 
     @GetMapping("/all-pending")
     public List<Mail> getALLPendingMails(){
@@ -36,6 +40,12 @@ public class MailSort {
     @GetMapping("/all-postman-assignments")
     public List<PostmanAssignment> getAllPostmanAssignments(){
         return postmanAssignmentRepository.findAll();
+    }
+
+    @PostMapping("/assign/add")
+    public ResponseEntity<String> createDeliveryRecord(@RequestBody AssignDeliveryDto assignDeliveryDto){
+        mailSortService.createDeliveryObject(assignDeliveryDto.getZone(), assignDeliveryDto.getPostmanId());
+        return ResponseEntity.ok("Delivery Record Add Success.");
     }
 
 

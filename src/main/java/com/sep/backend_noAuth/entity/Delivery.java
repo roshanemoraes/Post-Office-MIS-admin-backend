@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,10 @@ import java.util.List;
 
 @Document(collection = "Delivery")
 public class Delivery {
+
+    @Transient
+    public static final String SEQUENCE_NAME = "delivery_sequence";
+
     @Id
     private String deliveryId;
     private String postmanId;

@@ -26,6 +26,7 @@ public class Mail {
     private String status;
     private String destinationAddress;
     private String recipientName;
+    private String recipientId;
     private String datePosted;
     private String dateDelivered;
     private String zone;

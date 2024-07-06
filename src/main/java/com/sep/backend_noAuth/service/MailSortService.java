@@ -61,6 +61,7 @@ public class MailSortService {
            Mail mail = mailList.get(i);
            DestinationDto destination = new DestinationDto();
            destination.setAddressId(mail.getAddressId());
+           destination.setMailId(mail.getMailId());
 
            Address address = addressRepository.findByAddressId(mail.getAddressId());
            destination.setLat(Double.parseDouble(address.getLat()));

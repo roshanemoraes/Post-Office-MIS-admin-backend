@@ -90,6 +90,7 @@ public class ReturnMailController {
             newMail.setMailId(String.valueOf(sequenceGeneratorService.getSequenceNumber(Mail.SEQUENCE_NAME)));
             newMail.setStatus("Pending");
             newMail.setCustomerId("PO-Return");
+            newMail.setRecipientId(undeliverableMail.getCustomer_id());
             newMail.setMailType(undeliverableMail.getType());
             newMail.setDateDelivered("");
             newMail.setDatePosted(String.valueOf(new Date()));

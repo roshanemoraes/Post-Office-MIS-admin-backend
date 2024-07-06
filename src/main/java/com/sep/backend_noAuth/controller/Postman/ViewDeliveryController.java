@@ -8,18 +8,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @RestController
-@RequestMapping("/api/postman")
-public class HomePageController {
+@RequestMapping("/api/postman/view-delivery")
+public class ViewDeliveryController {
 
     @Autowired
     private DeliveryRepository deliveryRepository;
-    @GetMapping("/homepage")
-    public String helloFromHomePage() {
-        return "Hello From Home Page!";
-    }
-    @GetMapping("/get-delivery/{deliveryId}")
-    public Delivery getDeliveryForId(@PathVariable String deliveryId){
-        return deliveryRepository.findByDeliveryId(deliveryId);
+
+    @GetMapping("/get-today-delivery/{postmanId}")
+    public Delivery getTodayDelivery(@PathVariable String postmanId){
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+        String date = currentDate.format(formatter);
+        return deliveryRepository.findByDateAndPostmanId(date, postmanId);
     }
 }

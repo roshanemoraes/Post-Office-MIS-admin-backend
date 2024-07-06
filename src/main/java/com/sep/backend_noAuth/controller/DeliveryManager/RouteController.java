@@ -79,4 +79,5 @@ public class RouteController {
     public List<Delivery> getDeliveries(){
         return deliveryRepository.findAll();
     }
+
 }

@@ -20,16 +20,16 @@ import java.util.Map;
 @RequestMapping("/api/receptionist/bulk-mail")
 public class BulkMailController {
 
-//    @PostMapping("/upload")
-//    public ResponseEntity<List<Map<String,Object>>> processExcel(@RequestParam(name = "file") MultipartFile file) throws IOException {
-//        List<Map<String,Object>> result =  ExcelProcessService.convertExcelRows(file);
-//        return ResponseEntity.ok(result);
-//    }
     @PostMapping("/upload")
-    public ResponseEntity<Integer> processExcel(@RequestParam(name = "file") MultipartFile file) throws IOException {
+    public ResponseEntity<List<Map<String,Object>>> processExcel(@RequestParam(name = "file") MultipartFile file) throws IOException {
         List<Map<String,Object>> result =  ExcelProcessService.convertExcelRows(file);
-        return ResponseEntity.ok(result.size());
+        return ResponseEntity.ok(result);
     }
+//    @PostMapping("/upload")
+//    public ResponseEntity<Integer> processExcel(@RequestParam(name = "file") MultipartFile file) throws IOException {
+//        List<Map<String,Object>> result =  ExcelProcessService.convertExcelRows(file);
+//        return ResponseEntity.ok(result.size());
+//    }
     @PostMapping("/create-order")
     public ResponseEntity<String> createOrder(@RequestParam(name = "file") MultipartFile file) throws IOException {
         List<Map<String,Object>> result =  ExcelProcessService.convertExcelRows(file);

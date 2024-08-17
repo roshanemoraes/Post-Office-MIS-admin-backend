@@ -1,14 +1,15 @@
 package com.sep.backend_noAuth.controller.Receptionist;
 
+import com.sep.backend_noAuth.dto.InvoiceDto;
 import com.sep.backend_noAuth.entity.BulkMailOrder;
 import com.sep.backend_noAuth.entity.Mail;
+import com.sep.backend_noAuth.repository.Postage.BulkMailPostageRepository;
+import com.sep.backend_noAuth.service.BulkMailService;
 import com.sep.backend_noAuth.service.ExcelProcessService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -21,28 +22,51 @@ import java.util.Map;
 @RequestMapping("/api/receptionist/bulk-mail")
 public class BulkMailController {
 
+    @Autowired
+    BulkMailPostageRepository bulkMailPostageRepository;
+
+    @Autowired
+    BulkMailService bulkMailService;
+
 //    @PostMapping("/upload")
 //    public ResponseEntity<List<Map<String,Object>>> processExcel(@RequestParam(name = "file") MultipartFile file) throws IOException {
 //        List<Map<String,Object>> result =  ExcelProcessService.convertExcelRows(file);
 //        return ResponseEntity.ok(result);
 //    }
     @PostMapping("/upload")
-    public ResponseEntity<Integer> processExcel(@RequestParam(name = "file") MultipartFile file) {
+    public ResponseEntity<InvoiceDto> processExcel(@RequestParam(name = "file") MultipartFile file) {
         try {
             List<Map<String, Object>> result = ExcelProcessService.convertExcelRows(file);
-            if (result.size() >= 3) {
-                return ResponseEntity.ok(result.size());
+            int mailCount = result.size();
+
+            if (mailCount >= 200) {
+                return ResponseEntity.ok(bulkMailService.buildInvoiceDto(mailCount));
             } else {
-                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(result.size());
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
             }
         } catch (IllegalArgumentException e) {
-            // Return a 400 Bad Request with the exception message for validation errors
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(0);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } catch (IOException e) {
-            // Return a 500 Internal Server Error for IO exceptions
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    @PostMapping("/get-postage")
+    public ResponseEntity<Integer> getPostage(@RequestParam(required = true) int mailCount){
+            if(mailCount >= 1000){
+                return ResponseEntity.ok(bulkMailPostageRepository.findByMinCount(1000).getDiscount());
+            }
+            else if(mailCount >= 750){
+                return ResponseEntity.ok(bulkMailPostageRepository.findByMinCount(750).getDiscount());
+            }else if(mailCount >= 500){
+                return ResponseEntity.ok(bulkMailPostageRepository.findByMinCount(500).getDiscount());
+            }else if(mailCount >= 200){
+                return ResponseEntity.ok(bulkMailPostageRepository.findByMinCount(200).getDiscount());
+            }else{
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(mailCount);
+            }
+
+    }
+
     @PostMapping("/create-order")
     public ResponseEntity<String> createOrder(@RequestParam(name = "file") MultipartFile file) throws IOException {
         List<Map<String,Object>> result =  ExcelProcessService.convertExcelRows(file);

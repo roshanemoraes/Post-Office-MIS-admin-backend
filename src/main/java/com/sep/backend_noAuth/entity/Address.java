@@ -1,6 +1,7 @@
 package com.sep.backend_noAuth.entity;
 import java.util.List;
 
+import com.sep.backend_noAuth.dto.AddressMemberDto;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -24,5 +25,5 @@ public class Address {
     String city;
     String zone;
     String houseNumber;
-    List<String> members;
+    List<AddressMemberDto> members;
 }

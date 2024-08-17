@@ -3,8 +3,10 @@ package com.sep.backend_noAuth.controller.DeliveryManager;
 import com.sep.backend_noAuth.dto.AssignDeliveryReqDto;
 import com.sep.backend_noAuth.dto.AssignDeliveryResDto;
 import com.sep.backend_noAuth.entity.Delivery;
+import com.sep.backend_noAuth.entity.Distribution;
 import com.sep.backend_noAuth.entity.Mail;
 import com.sep.backend_noAuth.entity.PostmanAssignment;
+import com.sep.backend_noAuth.repository.DistributionRepository;
 import com.sep.backend_noAuth.repository.PostmanAssignmentRepository;
 import com.sep.backend_noAuth.service.MailService;
 import com.sep.backend_noAuth.service.MailSortService;
@@ -29,6 +31,9 @@ public class MailSortController {
 
     @Autowired
     private MailSortService mailSortService;
+
+    @Autowired
+    private DistributionRepository distributionRepository;
 
     @GetMapping("/all-pending")
     public List<Mail> getALLPendingMails(){
@@ -75,6 +80,10 @@ public class MailSortController {
 //    public List<PostmanAssignment> getAllPostmanAssignments(){
 //        return postmanAssignmentRepository.findAll();
 //    }
+    @GetMapping("/all-distribution-assignments")
+    public List<Distribution> getAllDistributionAssignments(){
+        return distributionRepository.findAll();
+    }
 
     @PostMapping("/assign/add")
     public ResponseEntity<String> createDeliveryRecord(@RequestBody AssignDeliveryReqDto assignDeliveryReqDto){

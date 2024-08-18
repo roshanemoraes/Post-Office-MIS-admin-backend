@@ -137,8 +137,8 @@ public class ReturnMailController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PostMapping("/add/address-update")
-    public ResponseEntity<String> addToAddressUpdate(@RequestBody String undeliverableId){
+    @PostMapping("/address-update/add/{undeliverableId}")
+    public ResponseEntity<String> addToAddressUpdate(@PathVariable String undeliverableId){
         UndeliverableMail undeliverableMail = undeliverableMailRepository.findByUndeliverableId(undeliverableId);
         if(undeliverableMail != null){
             undeliverableMail.setStatus("Address-Update-Pending");

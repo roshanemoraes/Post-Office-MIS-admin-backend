@@ -21,7 +21,7 @@ public class CustomerService {
 
     public Customer getCustomerInfo(String customerId){
         Query query = new Query();
-        query.addCriteria(Criteria.where("id").is(customerId));
+        query.addCriteria(Criteria.where("id").is(Long.valueOf(customerId)));
         return mongoTemplate.findOne(query, Customer.class);
     }
 }

@@ -24,11 +24,13 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+
     @GetMapping("/list/pending/{customerId}")
     public List<Mail> getAllPendingMails(@PathVariable String customerId){
         List<Mail> list = mailService.getAllMailsForStatus(customerId,"pending");
         return list;
     }
+
     @GetMapping("/list/delivered/{customerId}")
     public List<Mail> getAllDeliveredMails(@PathVariable String customerId){
         List<Mail> list = mailService.getAllMailsForStatus(customerId,"delivered");

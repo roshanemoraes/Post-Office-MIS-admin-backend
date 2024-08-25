@@ -13,4 +13,6 @@ import lombok.NoArgsConstructor;
 public class NotificationDto {
     private String customerId;
     private String message;
+    private String type;
+    private String mailId;
 }

@@ -164,4 +164,9 @@ public class ReturnMailController {
         undeliverableMailRepository.save(undeliverableMail);
         return undeliverableMail;
     }
+
+    @GetMapping("/get-undeliverable-mail/{mailId}")
+    public Mail getUndeliverableMail(@PathVariable String mailId){
+        return mailRepository.findByMailId(mailId);
+    }
 }

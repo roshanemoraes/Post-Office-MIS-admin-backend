@@ -22,6 +22,8 @@ public class NotificationService {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
 
         notification.setDate(currentDate.format(formatter));
+        notification.setType(dto.getType());
+        notification.setMailId(dto.getMailId());
         notification.setRead(false);
         notification.setMessage(dto.getMessage());
         notification.setCustomerId(dto.getCustomerId());

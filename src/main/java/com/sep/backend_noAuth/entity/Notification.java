@@ -22,7 +22,9 @@ public class Notification {
     @Id
     private String notificationId;
     private String customerId;
+    private String mailId;
     private String message;
     private String date;
+    private String type;
     private boolean read;
 }

@@ -50,3 +50,22 @@ post-office-mis/
 │   └── ...
 ├── README.md
 └── ...
+
+Backend
+The backend is built using Spring Boot and handles the core business logic, database interactions, and REST API endpoints.
+
+Spring Boot: Used for creating RESTful services and managing application logic.
+MongoDB: Acts as the primary database, storing all necessary data for the application.
+Realtime Location Tracking
+For real-time tracking of postmen, Firebase Realtime Database is utilized. This allows the admin to monitor the current locations of postmen during their delivery routes.
+
+Backend Setup
+1.Navigate to the backend directory:
+  cd backend
+2.Install dependencies and build the project:
+  mvn clean install
+3.Run the Spring Boot application:
+  mvn spring-boot:run
+
+Acknowledgements
+Thanks to Prof. Dulani Meedeniya for mentorship and guidance throughout the project.

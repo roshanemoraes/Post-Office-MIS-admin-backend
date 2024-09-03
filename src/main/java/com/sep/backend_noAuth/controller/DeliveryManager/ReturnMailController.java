@@ -69,7 +69,7 @@ public class ReturnMailController {
 //        List<UndeliverableMail> list = undeliverableMailRepository.findAll();
 //        return Optional.of(list);
 //    }
-    @GetMapping("/list-all")
+    @GetMapping(" ")
     public List<UndeliverableMail> getAllUndeliveredMails(){
         List<UndeliverableMail> list = undeliverableMailRepository.findByStatus("Undelivered");
         return list;

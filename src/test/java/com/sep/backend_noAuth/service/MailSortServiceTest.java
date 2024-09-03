@@ -4,6 +4,7 @@ import com.sep.backend_noAuth.dto.DestinationDto;
 import com.sep.backend_noAuth.entity.Address;
 import com.sep.backend_noAuth.entity.Delivery;
 import com.sep.backend_noAuth.entity.Mail;
+import com.sep.backend_noAuth.entity.MailTypes.NormalPost;
 import com.sep.backend_noAuth.repository.AddressRepository;
 import com.sep.backend_noAuth.repository.DeliveryRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,7 +58,7 @@ class MailSortServiceTest {
         int postmanId = 2;
         List<Mail> mailList = new ArrayList<>();
 
-        Mail mail = new Mail();
+        Mail mail = new NormalPost();
         mail.setMailId("M123");
         mail.setMailType("Registered");
         mail.setCustomerId("456");

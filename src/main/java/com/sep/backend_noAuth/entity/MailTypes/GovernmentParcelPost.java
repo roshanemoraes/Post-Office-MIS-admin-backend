@@ -1,5 +1,6 @@
 package com.sep.backend_noAuth.entity.MailTypes;
 
+
 import com.sep.backend_noAuth.entity.Mail;
 import lombok.Data;
 import org.springframework.data.annotation.TypeAlias;
@@ -7,15 +8,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document(collection = "Mail")
-@TypeAlias("normal-parcel")
-public class NormalParcelPost extends Mail {
+@TypeAlias("gov-parcel")
+public class GovernmentParcelPost extends Mail {
     private String height;
     private String breadth;
     private String length;
 
-    public NormalParcelPost() {
+
+    public GovernmentParcelPost() {
         super();
-        this.setMailType("normal-parcel");
+        this.setMailType("gov-parcel");
     }
 
     public String getHeight() {

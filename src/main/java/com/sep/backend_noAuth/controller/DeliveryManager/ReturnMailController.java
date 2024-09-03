@@ -1,6 +1,7 @@
 package com.sep.backend_noAuth.controller.DeliveryManager;
 
 import com.sep.backend_noAuth.entity.Mail;
+import com.sep.backend_noAuth.entity.MailTypes.NormalPost;
 import com.sep.backend_noAuth.entity.UndeliverableMail;
 import com.sep.backend_noAuth.repository.MailRepository;
 import com.sep.backend_noAuth.repository.UndeliverableMailRepository;
@@ -86,7 +87,7 @@ public class ReturnMailController {
         Mail mail = mailRepository.findByMailId(undeliverableMail.getMailId());
 
         if (mail!=null){
-            Mail newMail = new Mail();
+            Mail newMail = new NormalPost();
             newMail.setMailId(String.valueOf(sequenceGeneratorService.getSequenceNumber(Mail.SEQUENCE_NAME)));
             newMail.setStatus("Pending");
             newMail.setCustomerId("PO-Return");

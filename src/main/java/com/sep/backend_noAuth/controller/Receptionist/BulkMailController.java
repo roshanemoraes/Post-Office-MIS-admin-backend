@@ -3,6 +3,7 @@ package com.sep.backend_noAuth.controller.Receptionist;
 import com.sep.backend_noAuth.dto.InvoiceDto;
 import com.sep.backend_noAuth.entity.BulkMailOrder;
 import com.sep.backend_noAuth.entity.Mail;
+import com.sep.backend_noAuth.entity.MailTypes.NormalPost;
 import com.sep.backend_noAuth.repository.Postage.BulkMailPostageRepository;
 import com.sep.backend_noAuth.service.BulkMailService;
 import com.sep.backend_noAuth.service.ExcelProcessService;
@@ -89,7 +90,7 @@ public class BulkMailController {
         order.setStatus("Pending-Sort");
 
         for(int i=0;i< result.size(); i++){
-            Mail mail = new Mail();
+            Mail mail = new NormalPost();
             //TODO: This is under construction...
         }
         return ResponseEntity.ok("Order Success.");

@@ -1,4 +1,5 @@
 package com.sep.backend_noAuth.dto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,9 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 
-public class DestinationDto {
-    private String addressId;
-    private String mailId;
-    private double lat;
-    private double lng;
+public class AssignDeliveryResDto {
+    private Integer id;
+    private String deliveryId;
+    private Long postmanId;
+    private String zone;
+    private String status;
 }

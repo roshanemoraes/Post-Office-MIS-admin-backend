@@ -1,4 +1,5 @@
 package com.sep.backend_noAuth.entity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,17 +12,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Builder
 
-@Document(collection = "Customer")
-public class Customer {
+@Document(collection = "Db-Sequence")
+public class DbSequence {
     @Id
-    String id;
-    String userName;
-    String fullName;
-    String email;
-    String nic;
-    String addressId;
-    String contactNumber;
-    String dataJoined;
-    String password;
-    String roles;
+    private String id;
+    private int seq;
+
 }

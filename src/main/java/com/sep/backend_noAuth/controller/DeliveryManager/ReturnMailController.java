@@ -69,7 +69,7 @@ public class ReturnMailController {
 //        List<UndeliverableMail> list = undeliverableMailRepository.findAll();
 //        return Optional.of(list);
 //    }
-    @GetMapping("/list-all")
+    @GetMapping(" ")
     public List<UndeliverableMail> getAllUndeliveredMails(){
         List<UndeliverableMail> list = undeliverableMailRepository.findByStatus("Undelivered");
         return list;
@@ -137,8 +137,8 @@ public class ReturnMailController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PostMapping("/add/address-update")
-    public ResponseEntity<String> addToAddressUpdate(@RequestBody String undeliverableId){
+    @PostMapping("/address-update/add/{undeliverableId}")
+    public ResponseEntity<String> addToAddressUpdate(@PathVariable String undeliverableId){
         UndeliverableMail undeliverableMail = undeliverableMailRepository.findByUndeliverableId(undeliverableId);
         if(undeliverableMail != null){
             undeliverableMail.setStatus("Address-Update-Pending");
@@ -163,5 +163,10 @@ public class ReturnMailController {
                 "2024-04-15");
         undeliverableMailRepository.save(undeliverableMail);
         return undeliverableMail;
+    }
+
+    @GetMapping("/get-undeliverable-mail/{mailId}")
+    public Mail getUndeliverableMail(@PathVariable String mailId){
+        return mailRepository.findByMailId(mailId);
     }
 }

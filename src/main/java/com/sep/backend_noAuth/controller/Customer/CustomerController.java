@@ -1,5 +1,7 @@
 package com.sep.backend_noAuth.controller.Customer;
 
+import com.sep.backend_noAuth.dto.Customer.ProfileUpdateRequestDto;
+import com.sep.backend_noAuth.dto.PostTypes.NormalPost;
 import com.sep.backend_noAuth.entity.Customer;
 import com.sep.backend_noAuth.entity.Mail;
 import com.sep.backend_noAuth.repository.MailRepository;
@@ -7,9 +9,11 @@ import com.sep.backend_noAuth.service.CustomerService;
 import com.sep.backend_noAuth.service.MailService;
 import com.sep.backend_noAuth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/customer")
@@ -43,5 +47,12 @@ public class CustomerController {
         return customerInfo;
     }
 
-
+    @PostMapping("/profile/update")
+    public ResponseEntity<String> updateProfileInfo(@RequestBody ProfileUpdateRequestDto dto) {
+        Optional<Customer> newCustomer = customerService.updateCustomer(dto);
+        if (newCustomer.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok("Profile Updated.");
+    }
 }

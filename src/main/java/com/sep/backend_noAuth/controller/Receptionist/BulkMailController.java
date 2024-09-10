@@ -29,28 +29,29 @@ public class BulkMailController {
     @Autowired
     BulkMailService bulkMailService;
 
-//    @PostMapping("/upload")
-//    public ResponseEntity<List<Map<String,Object>>> processExcel(@RequestParam(name = "file") MultipartFile file) throws IOException {
-//        List<Map<String,Object>> result =  ExcelProcessService.convertExcelRows(file);
-//        return ResponseEntity.ok(result);
-//    }
-    @PostMapping("/upload")
-    public ResponseEntity<InvoiceDto> processExcel(@RequestParam(name = "file") MultipartFile file) {
-        try {
-            List<Map<String, Object>> result = ExcelProcessService.convertExcelRows(file);
-            int mailCount = result.size();
 
-            if (mailCount >= 200) {
-                return ResponseEntity.ok(bulkMailService.buildInvoiceDto(mailCount));
-            } else {
-                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
-            }
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    @PostMapping("/upload")
+    public ResponseEntity<List<Map<String,Object>>> processExcel(@RequestParam(name = "file") MultipartFile file) throws IOException {
+        List<Map<String,Object>> result =  ExcelProcessService.convertExcelRows(file);
+        return ResponseEntity.ok(result);
     }
+//    @PostMapping("/upload")
+//    public ResponseEntity<InvoiceDto> processExcel(@RequestParam(name = "file") MultipartFile file) {
+//        try {
+//            List<Map<String, Object>> result = ExcelProcessService.convertExcelRows(file);
+//            int mailCount = result.size();
+//
+//            if (mailCount >= 200) {
+//                return ResponseEntity.ok(bulkMailService.buildInvoiceDto(mailCount));
+//            } else {
+//                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+//            }
+//        } catch (IllegalArgumentException e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//        } catch (IOException e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
     @PostMapping("/get-postage")
     public ResponseEntity<Integer> getPostage(@RequestParam(required = true) int mailCount){
             if(mailCount >= 1000){
@@ -89,9 +90,11 @@ public class BulkMailController {
         order.setItemCount(result.size());
         order.setStatus("Pending-Sort");
 
-        for(int i=0;i< result.size(); i++){
-            Mail mail = new NormalPost();
-            //TODO: This is under construction...
+        for(Map<String,Object> row : result){
+//            String mailType = (String)row.get("mailType");
+//            MailFlyweight mailFlyweight = mailFlyweightFactory.getFlyweight(mailType);
+//            String uniqueData = (String) row.get("uniqueData"); // Replace with actual unique data from row
+//            mailFlyweight.processMail(uniqueData);
         }
         return ResponseEntity.ok("Order Success.");
     }

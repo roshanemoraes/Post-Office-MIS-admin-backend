@@ -10,37 +10,20 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "Mail")
 @TypeAlias("gov-parcel")
 public class GovernmentParcelPost extends Mail {
-    private String height;
-    private String breadth;
-    private String length;
+    public String getMinistry() {
+        return ministry;
+    }
 
+    public void setMinistry(String ministry) {
+        this.ministry = ministry;
+    }
+
+    private String ministry;
 
     public GovernmentParcelPost() {
         super();
         this.setMailType("gov-parcel");
     }
 
-    public String getHeight() {
-        return height;
-    }
 
-    public void setHeight(String height) {
-        this.height = height;
-    }
-
-    public String getBreadth() {
-        return breadth;
-    }
-
-    public void setBreadth(String breadth) {
-        this.breadth = breadth;
-    }
-
-    public String getLength() {
-        return length;
-    }
-
-    public void setLength(String length) {
-        this.length = length;
-    }
 }

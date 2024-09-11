@@ -30,28 +30,28 @@ public class BulkMailController {
     BulkMailService bulkMailService;
 
 
-    @PostMapping("/upload")
-    public ResponseEntity<List<Map<String,Object>>> processExcel(@RequestParam(name = "file") MultipartFile file) throws IOException {
-        List<Map<String,Object>> result =  ExcelProcessService.convertExcelRows(file);
-        return ResponseEntity.ok(result);
-    }
 //    @PostMapping("/upload")
-//    public ResponseEntity<InvoiceDto> processExcel(@RequestParam(name = "file") MultipartFile file) {
-//        try {
-//            List<Map<String, Object>> result = ExcelProcessService.convertExcelRows(file);
-//            int mailCount = result.size();
-//
-//            if (mailCount >= 200) {
-//                return ResponseEntity.ok(bulkMailService.buildInvoiceDto(mailCount));
-//            } else {
-//                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
-//            }
-//        } catch (IllegalArgumentException e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//        } catch (IOException e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-//        }
+//    public ResponseEntity<List<Map<String,Object>>> processExcel(@RequestParam(name = "file") MultipartFile file) throws IOException {
+//        List<Map<String,Object>> result =  ExcelProcessService.convertExcelRows(file);
+//        return ResponseEntity.ok(result);
 //    }
+    @PostMapping("/upload")
+    public ResponseEntity<InvoiceDto> processExcel(@RequestParam(name = "file") MultipartFile file) {
+        try {
+            List<Map<String, Object>> result = ExcelProcessService.convertExcelRows(file);
+            int mailCount = result.size();
+
+            if (mailCount >= 200) {
+                return ResponseEntity.ok(bulkMailService.buildInvoiceDto(mailCount));
+            } else {
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(null);
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
     @PostMapping("/get-postage")
     public ResponseEntity<Integer> getPostage(@RequestParam(required = true) int mailCount){
             if(mailCount >= 1000){

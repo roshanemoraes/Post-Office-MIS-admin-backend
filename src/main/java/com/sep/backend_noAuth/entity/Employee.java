@@ -20,13 +20,13 @@ public class Employee {
     public static final String SEQUENCE_NAME = "employee_sequence";
 
     @Id
-    private Long id;
-    private String userName;
-    private String fullName;
+    private String id;
+    private String name;
     private String email;
+    private String password;
+    private String roles;
+    private String fullName;
     private String nic;
     private String contactNumber;
     private String dateJoined;
-    private String password;
-    private String roles;
 }

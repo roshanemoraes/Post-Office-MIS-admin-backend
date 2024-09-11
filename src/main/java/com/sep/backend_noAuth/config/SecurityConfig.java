@@ -1,6 +1,6 @@
 package com.sep.backend_noAuth.config;
 
-import com.sep.backend_noAuth.filter.JwtAuthFilter;
+import com.sep.backend_noAuth.filter.PostalOfficeJwtAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,10 +29,10 @@ import java.util.Arrays;
 @EnableMethodSecurity
 public class SecurityConfig {
     @Autowired
-    private JwtAuthFilter jwtAuthFilter;
+    private PostalOfficeJwtAuthFilter postalOfficeJwtAuthFilter;
     @Bean
     public UserDetailsService userDetailsService(){
-        return new UserInfoUserDetailsService();
+        return new PostalOfficeUserDetailsService();
     }
     //this will restrict needed endpoints
     @Bean
@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)   //TODO: because we don't want to keep anything in our cookies
                 .and()
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(postalOfficeJwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
     @Bean

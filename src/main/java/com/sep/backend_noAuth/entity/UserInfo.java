@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 
-@Document(collection = "user")
+@Document(collection = "Employee")
 public class UserInfo {
     @Id
     private String id;
@@ -21,4 +21,8 @@ public class UserInfo {
     private String email;
     private String password;
     private String roles;
+    private String fullName;
+    private String nic;
+    private String contactNumber;
+    private String dateJoined;
 }

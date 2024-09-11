@@ -1,6 +1,6 @@
 package com.sep.backend_noAuth.filter;
 
-import com.sep.backend_noAuth.config.UserInfoUserDetailsService;
+import com.sep.backend_noAuth.config.PostalOfficeUserDetailsService;
 import com.sep.backend_noAuth.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,13 +18,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-public class JwtAuthFilter extends OncePerRequestFilter {
+public class PostalOfficeJwtAuthFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtService jwtService;
 
     @Autowired
-    private UserInfoUserDetailsService userDetailsService;
+    private PostalOfficeUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

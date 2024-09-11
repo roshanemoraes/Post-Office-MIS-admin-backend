@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/")
 public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -28,12 +28,7 @@ public class AuthController {
     @Autowired
     private UserRepository userInfoRepository;
 
-    @GetMapping("/hehe")
-    public String testinggg(){
-        return "okay";
-    }
-
-    @PostMapping("/authenticate")
+    @PostMapping("/admin/authenticate")
     public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest, HttpServletResponse response){
         System.out.println("Auth req came to backend");
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(),authRequest.getPassword()));

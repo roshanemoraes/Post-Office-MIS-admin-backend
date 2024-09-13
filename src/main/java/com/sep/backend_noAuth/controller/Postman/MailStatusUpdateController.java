@@ -16,7 +16,7 @@ public class MailStatusUpdateController {
     // Endpoint to update mail status by mailId
     @PutMapping
     public ResponseEntity<String> updateMailStatus(@RequestBody MailStatusUpdateDto mailStatusUpdateDTO) {
-        // Optional validation for status value (you can modify it based on your logic)
+        // Optional validation for status value
         if (!isValidStatus(mailStatusUpdateDTO.getStatus())) {
             return ResponseEntity.badRequest().body("Invalid status value");
         }

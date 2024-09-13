@@ -21,6 +21,7 @@ public class Notification {
 
     @Id
     private String notificationId;
+    private String undeliverableId;
     private String customerId;
     private String mailId;
     private String message;

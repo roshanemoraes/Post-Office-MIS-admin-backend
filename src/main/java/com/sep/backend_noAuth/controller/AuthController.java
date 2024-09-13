@@ -30,7 +30,6 @@ public class AuthController {
 
     @PostMapping("/admin/authenticate")
     public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest, HttpServletResponse response){
-        System.out.println("Auth req came to backend");
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(),authRequest.getPassword()));
         if(authentication.isAuthenticated()){
             System.out.println("User valid!");

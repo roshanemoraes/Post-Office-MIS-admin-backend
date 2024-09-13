@@ -24,7 +24,15 @@ public class NotificationController {
 
     @MessageMapping("/notify")
     @SendTo("/topic/notifications") // Default destination for messages
-    public Notification sendNotification(NotificationDto dto) {
+    public Notification sendBroadcastNotification(NotificationDto dto) {
+        Notification notification = notificationService.createNotification(dto);
+        notificationRepository.save(notification);
+        return notification;
+    }
+    // This method now sends to a specific customer based on their ID
+    @MessageMapping("/notify/{customerId}")
+    @SendTo("/topic/customer/{customerId}") // Sending notification to a specific customer based on customerId
+    public Notification sendNotification(NotificationDto dto, @PathVariable String customerId) {
         Notification notification = notificationService.createNotification(dto);
         notificationRepository.save(notification);
         return notification;

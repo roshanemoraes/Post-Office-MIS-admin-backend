@@ -40,10 +40,11 @@ public class SecurityConfig {
         return http.csrf().disable()
                 .cors().and()
                 .authorizeHttpRequests()
-                .requestMatchers("/admin/authenticate").permitAll()      //TODO: don't authenticate it. just pass it
+                .requestMatchers("/admin/authenticate","/api/**","/postage/**","/matrix/**","/ws/**").permitAll()      //TODO: don't authenticate it. just pass it
                 .and()
-                .authorizeHttpRequests().requestMatchers("/api/**","/postage/**","/matrix/**").authenticated()
-                .and()
+//                .authorizeHttpRequests()
+//                .requestMatchers("/api/**","/postage/**","/matrix/**").authenticated()
+//                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)   //TODO: because we don't want to keep anything in our cookies
                 .and()

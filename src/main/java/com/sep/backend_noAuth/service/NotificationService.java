@@ -24,6 +24,7 @@ public class NotificationService {
         notification.setDate(currentDate.format(formatter));
         notification.setType(dto.getType());
         notification.setMailId(dto.getMailId());
+        notification.setUndeliverableId(dto.getUndeliverableId());
         notification.setRead(false);
         notification.setMessage(dto.getMessage());
         notification.setCustomerId(dto.getCustomerId());

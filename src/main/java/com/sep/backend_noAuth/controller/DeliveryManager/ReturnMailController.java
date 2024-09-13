@@ -1,10 +1,12 @@
 package com.sep.backend_noAuth.controller.DeliveryManager;
 
+import com.sep.backend_noAuth.dto.AddressUpdateRequestDto;
 import com.sep.backend_noAuth.entity.Mail;
 import com.sep.backend_noAuth.entity.MailTypes.NormalPost;
 import com.sep.backend_noAuth.entity.UndeliverableMail;
 import com.sep.backend_noAuth.repository.MailRepository;
 import com.sep.backend_noAuth.repository.UndeliverableMailRepository;
+import com.sep.backend_noAuth.service.ReturnMailService;
 import com.sep.backend_noAuth.service.SequenceGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,55 +24,15 @@ public class ReturnMailController {
     private UndeliverableMailRepository undeliverableMailRepository;
 
     @Autowired
+    private ReturnMailService returnMailService;
+
+    @Autowired
     private MailRepository mailRepository;
 
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
 
-//    @GetMapping("list-all")
-//    public List<Map<String, Object>> getReturnMailList() {
-//        List<Map<String, Object>> returnMailList = Arrays.asList(
-//                Map.of(
-//                        "id", "137",
-//                        "type", "Normal Post",
-//                        "zone", "Pallansena South",
-//                        "city", "Kochchikade",
-//                        "reason", "Invalid Recipient Name",
-//                        "returnDate", "2024-04-15"
-//                ),
-//                Map.of(
-//                        "id", "144",
-//                        "type", "Personal Courier",
-//                        "zone", "Katana",
-//                        "city", "Kochchikade",
-//                        "reason", "Damaged",
-//                        "returnDate", "2024-04-25"
-//                ),
-//                Map.of(
-//                        "id", "91",
-//                        "type", "Personal Parcel",
-//                        "zone", "Kattuwa",
-//                        "city", "Negombo",
-//                        "reason", "Over weight",
-//                        "returnDate", "2024-03-15"
-//                ),
-//                Map.of(
-//                        "id", "111",
-//                        "type", "Registered Post",
-//                        "zone", "Pallansena North",
-//                        "city", "Kochchikade",
-//                        "reason", "Invalid Address",
-//                        "returnDate", "2024-01-15"
-//                )
-//        );
-//        return returnMailList;
-//    }
-//    @GetMapping("/list-all")
-//    public Optional<List<UndeliverableMail>> getAllMails(){
-//        List<UndeliverableMail> list = undeliverableMailRepository.findAll();
-//        return Optional.of(list);
-//    }
-    @GetMapping(" ")
+    @GetMapping("/")
     public List<UndeliverableMail> getAllUndeliveredMails(){
         List<UndeliverableMail> list = undeliverableMailRepository.findByStatus("Undelivered");
         return list;
@@ -108,7 +70,8 @@ public class ReturnMailController {
     }
     @GetMapping("/address-update")
     public List<UndeliverableMail> getAddressUpdateUndeliveredMails(){
-        List<UndeliverableMail> list = undeliverableMailRepository.findByStatus("Address-Update-Pending");
+//        List<UndeliverableMail> list = undeliverableMailRepository.findByStatus("Address-Update-Pending");
+        List<UndeliverableMail> list = returnMailService.getNewAndPendingAddressUpdateMails();
         return list;
     }
     @GetMapping("/discarded-mail")
@@ -149,6 +112,16 @@ public class ReturnMailController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PostMapping("/address-update/update")
+    public ResponseEntity<String> updateAddress(@RequestBody AddressUpdateRequestDto dto){
+        try {
+            returnMailService.processAddressUpdate(dto);
+            return ResponseEntity.ok("Address updated successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error updating address: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/add")
     public UndeliverableMail testAdd(){
         UndeliverableMail undeliverableMail = new UndeliverableMail(

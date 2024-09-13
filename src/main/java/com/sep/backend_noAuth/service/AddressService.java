@@ -19,6 +19,10 @@ public class AddressService {
     @Autowired
     private AddressRepository addressRepository;
 
+
+    //The [mongoTemplate.findOne] method is used to query the database.
+    // It returns a single document
+    // that matches the query criteria, mapping it to the Address class.
     @Autowired
     private MongoTemplate mongoTemplate;
 
@@ -40,12 +44,15 @@ public class AddressService {
     }
     public Address getAddressToValidate(AddressRequest addressRequest){
         Query query = new Query();
+        //Criteria objects are built using the values from the AddressRequest
         query.addCriteria(Criteria.where("city").is(addressRequest.getCity()));
         query.addCriteria(Criteria.where("houseNumber").is(addressRequest.getHouseNumber()));
         query.addCriteria(Criteria.where("zone").is(addressRequest.getZone()));
         return  mongoTemplate.findOne(query, Address.class);
     }
     public Address getAddressToValidateDummy(){
+
+        // A Query object is instantiated to build a query for MongoDB
         Query query = new Query();
         query.addCriteria(Criteria.where("city").is("Kochchikade"));
         query.addCriteria(Criteria.where("houseNumber").is("79"));

@@ -24,6 +24,4 @@ public class GovernmentParcelPost extends Mail {
         super();
         this.setMailType("gov-parcel");
     }
-
-
 }

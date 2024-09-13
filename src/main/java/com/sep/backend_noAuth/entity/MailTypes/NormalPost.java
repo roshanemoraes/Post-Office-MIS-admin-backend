@@ -1,16 +1,29 @@
 package com.sep.backend_noAuth.entity.MailTypes;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sep.backend_noAuth.entity.Mail;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.annotation.TypeAlias;
 
 @Data
-//@AllArgsConstructor
-//@NoArgsConstructor
-@Builder
-@Document(collection="Mail")
-public class NormalPost {
+@Document(collection = "Mail")
+@TypeAlias("normal-post")
+public class NormalPost extends Mail {
+    private String testField;
+
+    public NormalPost() {
+        super();
+        this.setMailType("normal-post");
+    }
+    public String getTestField() {
+        return testField;
+    }
+
+    public void setTestField(String testField) {
+        this.testField = testField;
+    }
+
 
 }

@@ -17,8 +17,6 @@ public class SummaryController {
 
     @GetMapping("/get-mails")
     public List<Mail> getMailsForSummary(@RequestParam String mailType, @RequestParam String datePosted) {
-        System.out.println(mailType);
-        System.out.println(datePosted);
         return mailRepository.findByDatePostedAndMailType(datePosted, mailType);
     }
 

@@ -1,7 +1,7 @@
 package com.sep.backend_noAuth.controller.DeliveryManager;
 
 import com.sep.backend_noAuth.dto.OptRoutePOST;
-import com.sep.backend_noAuth.entity.User;
+import com.sep.backend_noAuth.entity.UserInfo;
 import com.sep.backend_noAuth.service.DistanceMatrixService;
 import com.sep.backend_noAuth.service.TspService;
 import com.sep.backend_noAuth.service.UserService;
@@ -62,7 +62,7 @@ public class DistanceMatrixController {
     }
 
     @GetMapping("/list-postman")
-    public List<User> getListOfPostman(){
+    public List<UserInfo> getListOfPostman(){
         return userService.getListOfPostman();
     }
 

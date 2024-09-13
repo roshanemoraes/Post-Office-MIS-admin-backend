@@ -1,12 +1,11 @@
 package com.sep.backend_noAuth.controller;
 
 import com.sep.backend_noAuth.dto.UserAuth;
-import com.sep.backend_noAuth.entity.User;
+import com.sep.backend_noAuth.entity.UserInfo;
 import com.sep.backend_noAuth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -18,7 +17,7 @@ public class UserController {
 
     @PostMapping("/")
     public Object authenticate(@RequestBody UserAuth userAuth){
-        Optional<User> user = userRepository.findByEmail(userAuth.getEmail());
+        Optional<UserInfo> user = userRepository.findByEmail(userAuth.getEmail());
         if(user.isPresent() )
             if(userAuth.getPassword().equals(user.get().getPassword()))
                 return user;

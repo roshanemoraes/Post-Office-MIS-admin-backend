@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 
-public class NotificationDto {
-    private String customerId;
-    private String message;
-    private String type;
+public class AddressUpdateRequestDto {
     private String mailId;
+    private String customerId;
     private String undeliverableId;
+    private String newAddress;
 }

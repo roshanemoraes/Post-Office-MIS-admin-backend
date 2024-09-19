@@ -63,8 +63,8 @@ public class EmployeeController {
     @PostMapping("add-employee")
     public ResponseEntity<String> addNewEmployee(@RequestBody AddEmployeeDto employee){
         Employee newEmployee = new Employee();
-        newEmployee.setId(Long.valueOf(sequenceGeneratorService.getSequenceNumber(Employee.SEQUENCE_NAME)));
-        newEmployee.setUserName(employee.getEmployeeUserName());
+        newEmployee.setId(String.valueOf(sequenceGeneratorService.getSequenceNumber(Employee.SEQUENCE_NAME)));
+        newEmployee.setName(employee.getEmployeeUserName());
         newEmployee.setFullName(employee.getEmployeeFullName());
         newEmployee.setEmail(employee.getEmployeeEmail());
         newEmployee.setNic(employee.getEmployeeNIC());

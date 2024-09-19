@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NormalPost {
+public class NormalPostDto {
     String recipientName;
     String recipientHouseNumber;
     String recipientPostalZone;

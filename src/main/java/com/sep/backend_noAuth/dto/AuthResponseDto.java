@@ -9,11 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
-public class NotificationDto {
-    private String customerId;
+public class AuthResponseDto {
+    private String username;
+    private String email;
+    private String role;
     private String message;
-    private String type;
-    private String mailId;
-    private String undeliverableId;
 }

@@ -43,10 +43,9 @@ public class CustomerController {
     }
 
     @GetMapping("/list/delivered/{customerId}")
-    public List<Mail> getAllDeliveredMails(@PathVariable String customerId){
-        return mailService.getAllMailsForStatus(customerId,"delivered");
+    public List<Mail> getAllDeliveredMails(@PathVariable String customerId) {
+        return mailService.getAllMailsForStatus(customerId, "delivered");
     }
-
     @GetMapping("/list/profile/{customerId}")
     public Customer getProfileInfo(@PathVariable String customerId){
         return customerService.getCustomerInfo(customerId);

@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 
 @Document(collection = "Address" )
 public class Address {
-
     @Transient
     public static final String SEQUENCE_NAME = "address_sequence";
 

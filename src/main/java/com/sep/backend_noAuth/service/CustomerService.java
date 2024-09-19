@@ -37,7 +37,7 @@ public class CustomerService {
 
     public Customer getCustomerInfo(String customerId) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("id").is(Long.valueOf(customerId)));
+        query.addCriteria(Criteria.where("id").is(customerId));
         return mongoTemplate.findOne(query, Customer.class);
     }
     public String[] extractCityAndZone(String addressTextForm) {
@@ -87,31 +87,4 @@ public class CustomerService {
         }
         return Optional.empty();
     }
-
-    /*public void removeMemberByCustomerID(List<AddressMemberDto> members, String customerID) {
-        // Using removeIf to remove the member with the given customerID
-        members.removeIf(member -> member.getCustomerId().equals(customerID));
-    }
-
-    public Customer updateCustomerAddress(String addressId, String customerId) {
-        // Find the address by the provided addressId
-        Optional<Address> addressOptional = addressRepository.findById(addressId);
-
-        if (addressOptional.isPresent()) {
-            Address address = addressOptional.get();
-            List<AddressMemberDto> members = address.getMembers();  // Assuming Address has a getMembers() method
-
-            // Remove the member with the given customerId
-            removeMemberByCustomerID(members, customerId);
-
-            // After modifying the list, save the updated Address object back to the repository
-            address.setMembers(members);  // Assuming Address has a setMembers() method
-            addressRepository.save(address);
-        } else {
-            // Handle the case where the address is not found (e.g., log an error or throw an exception)
-            System.out.println("Address with ID " + addressId + " not found.");
-        }
-
-        return null;
-    }*/
 }

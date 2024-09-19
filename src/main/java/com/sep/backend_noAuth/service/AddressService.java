@@ -1,7 +1,9 @@
 package com.sep.backend_noAuth.service;
 
+import com.sep.backend_noAuth.dto.AddressMemberDto;
 import com.sep.backend_noAuth.dto.AddressRequest;
 import com.sep.backend_noAuth.entity.Address;
+import com.sep.backend_noAuth.entity.Customer;
 import com.sep.backend_noAuth.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -12,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AddressService {
@@ -58,5 +61,30 @@ public class AddressService {
         query.addCriteria(Criteria.where("houseNumber").is("79"));
         query.addCriteria(Criteria.where("zone").is("Pallansena South"));
         return  mongoTemplate.findOne(query, Address.class);
+    }
+    public void removeMemberByCustomerID(List<AddressMemberDto> members, String customerID) {
+        // Using removeIf to remove the member with the given customerID
+        members.removeIf(member -> member.getCustomerId().equals(customerID));
+    }
+    public Optional<Address> updateCustomerAddress(String addressId, String customerId) {
+        // Find the address by the provided addressId
+        Optional<Address> addressOptional = addressRepository.findById(addressId);
+
+        if (addressOptional.isPresent()) {
+            Address address = addressOptional.get();
+            List<AddressMemberDto> members = address.getMembers();  // Assuming Address has a getMembers() method
+
+            // Remove the member with the given customerId
+            removeMemberByCustomerID(members, customerId);
+
+            // After modifying the list, save the updated Address object back to the repository
+            address.setMembers(members);  // Assuming Address has a setMembers() method
+            addressRepository.save(address);
+        } else {
+            // Handle the case where the address is not found (e.g., log an error or throw an exception)
+            System.out.println("Address with ID " + addressId + " not found.");
+        }
+
+        return null;
     }
 }

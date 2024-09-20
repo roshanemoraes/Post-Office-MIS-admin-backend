@@ -1,8 +1,6 @@
 package com.sep.backend_noAuth.controller.Customer;
 
 import com.sep.backend_noAuth.dto.Customer.ProfileUpdateRequestDto;
-import com.sep.backend_noAuth.dto.PostTypes.NormalPost;
-import com.sep.backend_noAuth.entity.Address;
 import com.sep.backend_noAuth.entity.Customer;
 import com.sep.backend_noAuth.entity.Mail;
 import com.sep.backend_noAuth.repository.AddressRepository;

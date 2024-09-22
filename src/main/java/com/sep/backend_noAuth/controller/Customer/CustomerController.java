@@ -56,5 +56,13 @@ public class CustomerController {
             return ResponseEntity.ok("Customer Update Success");
         return ResponseEntity.notFound().build();
     }
-
+    @GetMapping("/mail-detail")
+    public Mail getMailDetails(@RequestParam String mailId){
+        Optional<Mail> mail = Optional.ofNullable(mailRepository.findByMailId(mailId));
+        if(mail.isPresent()){
+            return mail.get();
+        }else {
+            return null;
+        }
+    }
 }

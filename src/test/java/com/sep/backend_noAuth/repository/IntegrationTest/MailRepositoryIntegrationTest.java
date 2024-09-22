@@ -30,7 +30,6 @@ public class MailRepositoryIntegrationTest {
 
     @BeforeAll
     public static void setupMongoContainer() {
-        // Dynamically set the MongoDB URI for the Testcontainers instance
         System.setProperty("spring.data.mongodb.uri", mongoDBContainer.getReplicaSetUrl());
     }
 

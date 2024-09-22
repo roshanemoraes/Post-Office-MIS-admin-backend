@@ -18,23 +18,26 @@ public class RouteDisplayController {
     private DeliveryRepository deliveryRepository;
 
     @GetMapping("/get-delivery")
-    public Delivery getDelivery(@RequestParam String postmanId){
-
+    public ResponseEntity<?> getDelivery(@RequestParam String postmanId){
         LocalDate currentDate = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+        DateTimeFormatter formatter=DateTimeFormatter.ISO_DATE;
         String date = currentDate.format(formatter);
-
-        return deliveryRepository.findByDateAndPostmanId(date,postmanId);
+        Delivery delivery = deliveryRepository.findByDateAndPostmanId(date, postmanId);
+        if (delivery != null) {
+            return ResponseEntity.ok(delivery);
+        } else {
+            return ResponseEntity.status(404).body("Delivery not found");
+        }
     }
-//    @PutMapping("/update-delivery-status")
-//    public Delivery updateDeliveryStatus(@RequestBody DeliveryStatusUpdateDto deliveryStatusUpdateDto){
-//        Delivery delivery = deliveryRepository.findByDeliveryId(deliveryStatusUpdateDto.getDeliveryId());
-//        if (delivery != null){
-//            delivery.setStatus(deliveryStatusUpdateDto.getStatus());
-//            return  deliveryRepository.save(delivery);
-//        }
-//        return null;
+//    public Delivery getDelivery(@RequestParam String postmanId){
+//
+//        LocalDate currentDate = LocalDate.now();
+//        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+//        String date = currentDate.format(formatter);
+//
+//        return deliveryRepository.findByDateAndPostmanId(date,postmanId);
 //    }
+
 @PutMapping("/update-delivery-status")
 public ResponseEntity<String> updateDeliveryStatus(@RequestBody DeliveryStatusUpdateDto deliveryStatusUpdateDto) {
     // Find delivery by deliveryId in MongoDB

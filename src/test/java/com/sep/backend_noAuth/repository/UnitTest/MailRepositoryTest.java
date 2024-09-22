@@ -1,7 +1,8 @@
-package com.sep.backend_noAuth.repository;
+package com.sep.backend_noAuth.repository.UnitTest;
 
 import com.sep.backend_noAuth.entity.Mail;
 import com.sep.backend_noAuth.entity.MailTypes.NormalPost;
+import com.sep.backend_noAuth.repository.MailRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,7 @@
-package com.sep.backend_noAuth.repository;
+package com.sep.backend_noAuth.repository.UnitTest;
 
 import com.sep.backend_noAuth.entity.Employee;
+import com.sep.backend_noAuth.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;

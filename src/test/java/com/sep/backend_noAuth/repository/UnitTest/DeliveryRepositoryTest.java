@@ -1,7 +1,8 @@
-package com.sep.backend_noAuth.repository;
+package com.sep.backend_noAuth.repository.UnitTest;
 
 import com.sep.backend_noAuth.entity.Delivery;
 import com.sep.backend_noAuth.dto.DestinationDto;
+import com.sep.backend_noAuth.repository.DeliveryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

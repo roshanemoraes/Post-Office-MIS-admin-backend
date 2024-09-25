@@ -34,15 +34,16 @@ jobs:
       - name: Build and push container image to registry
         uses: azure/container-apps-deploy-action@v2
         with:
-          appSourcePath: ${{ github.workspace }}/Dockerfile
-          _dockerfilePathKey_: _dockerfilePath_
+          appSourcePath: ${{ github.workspace }}  # Root directory of the application
+          dockerfilePath: ${{ github.workspace }}/Dockerfile  # Path to your Dockerfile
           registryUrl: postofficemisregistry.azurecr.io
           registryUsername: ${{ secrets.BACKEND_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.BACKEND_REGISTRY_PASSWORD }}
           containerAppName: backend
           resourceGroup: SEP_G12
           imageToBuild: postofficemisregistry.azurecr.io/backend:${{ github.sha }}
-          _buildArgumentsKey_: |
-            _buildArgumentsValues_
+          buildArguments: |  # Optional: add build arguments if needed
+            ARG1=value1
+            ARG2=value2
 
 

@@ -34,8 +34,8 @@ jobs:
       - name: Build and push container image to registry
         uses: azure/container-apps-deploy-action@v2
         with:
-          appSourcePath: ./src  # Adjusted path to the application root directory
-          dockerfilePath: ./Dockerfile  # Adjusted path to your Dockerfile
+          appSourcePath: /home/runner/work/Post-Office-MIS-admin-backend  # Adjusted path to the application root directory
+          dockerfilePath: Dockerfile  # Adjusted path to your Dockerfile
           registryUrl: postofficemisregistry.azurecr.io
           registryUsername: ${{ secrets.BACKEND_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.BACKEND_REGISTRY_PASSWORD }}

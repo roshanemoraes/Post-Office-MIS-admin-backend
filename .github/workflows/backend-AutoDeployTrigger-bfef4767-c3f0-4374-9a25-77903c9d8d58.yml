@@ -34,8 +34,8 @@ jobs:
       - name: Build and push container image to registry
         uses: azure/container-apps-deploy-action@v2
         with:
-          appSourcePath: backend-noauth  # Adjusted path to the application root directory
-          dockerfilePath: backend-noauth/Dockerfile  # Adjusted path to your Dockerfile
+          appSourcePath: ${{ github.workspace }}/src  # Adjusted path to the application root directory
+          dockerfilePath: ${{ github.workspace }}/Dockerfile  # Adjusted path to your Dockerfile
           registryUrl: postofficemisregistry.azurecr.io
           registryUsername: ${{ secrets.BACKEND_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.BACKEND_REGISTRY_PASSWORD }}

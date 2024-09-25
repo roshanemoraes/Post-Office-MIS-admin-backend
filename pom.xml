@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -52,7 +52,8 @@
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
 			<version>0.11.5</version>
-		</dependency><dependency>
+		</dependency>
+		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
 			<version>0.11.5</version>
@@ -81,20 +82,25 @@
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>mongodb</artifactId>
-			<version>1.17.6</version> <!-- Replace with the latest version -->
+			<version>1.17.6</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>testcontainers</artifactId>
-			<version>1.17.6</version> <!-- Replace with the latest version -->
+			<version>1.17.6</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>1.17.6</version> <!-- Replace with the latest version -->
+			<version>1.17.6</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.ortools</groupId>
+			<artifactId>ortools-java</artifactId>
+			<version>9.10.4067</version> <!-- Use the latest version -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -105,11 +111,6 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.ortools</groupId>
-			<artifactId>ortools-java</artifactId>
-			<version>9.10.4067</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
@@ -127,6 +128,38 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<requiresUnpack>
+						<dependency>
+							<groupId>com.google.ortools</groupId>
+							<artifactId>ortools-java</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>com.google.ortools</groupId>
+							<artifactId>ortools-linux-x86-64</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>com.google.ortools</groupId>
+							<artifactId>ortools-darwin-x86-64</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>com.google.ortools</groupId>
+							<artifactId>ortools-win32-x86-64</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>com.google.ortools</groupId>
+							<artifactId>ortools-linux-aarch64</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>com.google.ortools</groupId>
+							<artifactId>ortools-darwin-aarch64</artifactId>
+						</dependency>
+					</requiresUnpack>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -137,5 +170,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

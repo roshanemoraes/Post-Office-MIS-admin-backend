@@ -47,6 +47,7 @@ public class SecurityConfig {
                         "/api/postman/**",
                         "/api/payment-gateway/create",
                         "/api/customer/**",
+                        "/test/**",
                         "/api/notifications/**",
                         "/backup").permitAll()      //TODO: don't authenticate it. just pass it.requestMatchers("/admin/authenticate",
 //                        "/api/**",

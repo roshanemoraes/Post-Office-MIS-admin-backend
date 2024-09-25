@@ -35,7 +35,7 @@ jobs:
         uses: azure/container-apps-deploy-action@v2
         with:
           appSourcePath: ${{github.workspace}}  # Adjusted path to the application root directory
-          dockerfilePath: ../Dockerfile  # Adjusted path to your Dockerfile
+          dockerfilePath: ./Dockerfile  # Adjusted path to your Dockerfile
           registryUrl: postofficemisregistry.azurecr.io
           registryUsername: ${{ secrets.BACKEND_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.BACKEND_REGISTRY_PASSWORD }}

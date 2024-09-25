@@ -4,21 +4,21 @@ name: Trigger auto deployment for backend
 on:
   # Automatically trigger it when detected changes in repo
   push:
-    branches: 
+    branches:
       [ deployment-v0.1 ]
     paths:
-    - '**'
-    - '.github/workflows/backend-AutoDeployTrigger-bfef4767-c3f0-4374-9a25-77903c9d8d58.yml'
+      - '**'
+      - '.github/workflows/backend-AutoDeployTrigger-bfef4767-c3f0-4374-9a25-77903c9d8d58.yml'
 
   # Allow manual trigger 
-  workflow_dispatch:      
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    permissions: 
-      id-token: write #This is required for requesting the OIDC JWT Token
-      contents: read #Required when GH token is used to authenticate with private repo
+    permissions:
+      id-token: write # This is required for requesting the OIDC JWT Token
+      contents: read # Required when GH token is used to authenticate with private repo
 
     steps:
       - name: Checkout to the branch
@@ -34,8 +34,8 @@ jobs:
       - name: Build and push container image to registry
         uses: azure/container-apps-deploy-action@v2
         with:
-          appSourcePath: ${{ github.workspace }}  # Root directory of the application
-          dockerfilePath: ${{ github.workspace }}/Dockerfile  # Path to your Dockerfile
+          appSourcePath: ${{ github.workspace }}/backend-noauth  # Adjusted path to the application root directory
+          dockerfilePath: ${{ github.workspace }}/backend-noauth/Dockerfile  # Adjusted path to your Dockerfile
           registryUrl: postofficemisregistry.azurecr.io
           registryUsername: ${{ secrets.BACKEND_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.BACKEND_REGISTRY_PASSWORD }}
@@ -45,5 +45,3 @@ jobs:
           buildArguments: |  # Optional: add build arguments if needed
             ARG1=value1
             ARG2=value2
-
-

@@ -14,8 +14,8 @@ public class DatabaseBackupService {
     @Value("${spring.data.mongodb.database}")
     private String mongoDatabase;
 
-    @Value("${mongodb.backup.path}")
-    private String backupPath;
+    //@Value("${mongodb.backup.path}")
+    private String backupPath = "F:sep";
 
     public void backupDatabase() throws IOException, InterruptedException {
         // Enclose the URI in double quotes to prevent special characters from being misinterpreted

@@ -1,0 +1,48 @@
+name: Trigger auto deployment for backend-1
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ deployment-v0.1 ]
+    paths:
+    - '**'
+    - '.github/workflows/backend-1-AutoDeployTrigger-69c5b751-5039-4c9e-aaeb-43bab66c080e.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.BACKEND1_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.BACKEND1_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.BACKEND1_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }}
+          _dockerfilePathKey_: _dockerfilePath_
+          registryUrl: postofficemisregistry.azurecr.io
+          registryUsername: ${{ secrets.BACKEND1_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.BACKEND1_REGISTRY_PASSWORD }}
+          containerAppName: backend-1
+          resourceGroup: SEP_G12
+          imageToBuild: postofficemisregistry.azurecr.io/backend-1:${{ github.sha }}
+          _buildArgumentsKey_: |
+            _buildArgumentsValues_
+
+

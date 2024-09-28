@@ -3,6 +3,7 @@ package com.sep.backend_noAuth.controller.Receptionist;
 import com.sep.backend_noAuth.dto.InvoiceDto;
 import com.sep.backend_noAuth.entity.BulkMailOrder;
 import com.sep.backend_noAuth.entity.Mail;
+import com.sep.backend_noAuth.entity.MailTypes.NormalPost;
 import com.sep.backend_noAuth.repository.Postage.BulkMailPostageRepository;
 import com.sep.backend_noAuth.service.BulkMailService;
 import com.sep.backend_noAuth.service.ExcelProcessService;
@@ -27,6 +28,7 @@ public class BulkMailController {
 
     @Autowired
     BulkMailService bulkMailService;
+
 
 //    @PostMapping("/upload")
 //    public ResponseEntity<List<Map<String,Object>>> processExcel(@RequestParam(name = "file") MultipartFile file) throws IOException {
@@ -88,9 +90,11 @@ public class BulkMailController {
         order.setItemCount(result.size());
         order.setStatus("Pending-Sort");
 
-        for(int i=0;i< result.size(); i++){
-            Mail mail = new Mail();
-            //TODO: This is under construction...
+        for(Map<String,Object> row : result){
+//            String mailType = (String)row.get("mailType");
+//            MailFlyweight mailFlyweight = mailFlyweightFactory.getFlyweight(mailType);
+//            String uniqueData = (String) row.get("uniqueData"); // Replace with actual unique data from row
+//            mailFlyweight.processMail(uniqueData);
         }
         return ResponseEntity.ok("Order Success.");
     }

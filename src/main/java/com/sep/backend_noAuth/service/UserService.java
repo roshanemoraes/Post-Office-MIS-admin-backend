@@ -1,6 +1,6 @@
 package com.sep.backend_noAuth.service;
 
-import com.sep.backend_noAuth.entity.User;
+import com.sep.backend_noAuth.entity.UserInfo;
 import com.sep.backend_noAuth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -19,10 +19,10 @@ public class UserService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public List<User> getListOfPostman(){
+    public List<UserInfo> getListOfPostman(){
         Query query = new Query();
         query.addCriteria(Criteria.where("roles").is("Postman"));
-        return mongoTemplate.find(query, User.class);
+        return mongoTemplate.find(query, UserInfo.class);
     }
 
 }

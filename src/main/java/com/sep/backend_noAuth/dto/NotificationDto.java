@@ -15,4 +15,5 @@ public class NotificationDto {
     private String message;
     private String type;
     private String mailId;
+    private String undeliverableId;
 }

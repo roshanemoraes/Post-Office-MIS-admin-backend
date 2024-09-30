@@ -61,7 +61,7 @@ public class TspController {
         String route = "";
         long index = routing.start(0);
         while (!routing.isEnd(index)) {
-            route += manager.indexToNode(index) + " -> ";
+            route += manager.indexToNode(index) + ",";
             long previousIndex = index;
             index = solution.value(routing.nextVar(index));
             routeDistance += routing.getArcCostForVehicle(previousIndex, index, 0);

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NormalPostDto {
+public class GovParcelPostDto {
     private String recipientId;
     private String recipientName;
     private String recipientHouseNumber;
@@ -17,6 +17,7 @@ public class NormalPostDto {
     private String recipientCity;
     private String recipientAddress;
     private Double postage;
+    private String ministry;
 
     private String senderId;
     private String senderName;
@@ -25,3 +26,4 @@ public class NormalPostDto {
     private String senderCity;
     private String senderAddress;
 }
+

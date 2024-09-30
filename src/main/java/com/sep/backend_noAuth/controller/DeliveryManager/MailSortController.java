@@ -86,7 +86,7 @@ public class MailSortController {
     }
 
     @PostMapping("/assign/add")
-    public ResponseEntity<String> createDeliveryRecord(@RequestBody AssignDeliveryReqDto assignDeliveryReqDto){
+    public ResponseEntity<String> createDeliveryRecord(@RequestBody AssignDeliveryReqDto assignDeliveryReqDto) throws Exception {
         mailSortService.createDeliveryObject(assignDeliveryReqDto.getZone(), assignDeliveryReqDto.getPostmanId());
         return ResponseEntity.ok("Delivery Record Add Success.");
     }

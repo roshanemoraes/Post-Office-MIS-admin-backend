@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .cors().and()
                 .authorizeHttpRequests()
                 .requestMatchers("/admin/authenticate",
+                        "/solve-tsp",
                         "/ws/**",
                         "/authenticate",
                         "/mobile/authenticate",
@@ -49,6 +50,7 @@ public class SecurityConfig {
                         "/api/customer/**",
                         "/test/**",
                         "/api/notifications/**",
+                        "/api/**",
                         "/backup").permitAll()      //TODO: don't authenticate it. just pass it.requestMatchers("/admin/authenticate",
 //                        "/api/**",
 //                        "/postage/**",

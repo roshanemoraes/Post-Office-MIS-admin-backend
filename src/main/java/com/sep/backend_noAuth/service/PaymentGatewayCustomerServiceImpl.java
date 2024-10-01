@@ -10,18 +10,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PaymentGatewayServiceImpl implements PaymentGatewayService{
-
+public class PaymentGatewayCustomerServiceImpl implements PaymentGatewayService{
     @Value("${stripe.secretKey}")
     private String stripeSecretKey;
+
     @Override
     public PaymentGatewayResponseDto createPaymentLink(PaymentGatewayOrderDto order) throws StripeException {
         Stripe.apiKey = stripeSecretKey;
         SessionCreateParams params = SessionCreateParams.builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD )
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("http://localhost:3000/admin/receptionist/money-order/success")
-                .setCancelUrl("http://localhost:3000/admin/receptionist/money-order/fail")
+                .setSuccessUrl("http://localhost:3000/customer/money-order/success")
+                .setCancelUrl("http://localhost:3000/customer/money-order/fail")
                 .addLineItem(SessionCreateParams
                         .LineItem
                         .builder()

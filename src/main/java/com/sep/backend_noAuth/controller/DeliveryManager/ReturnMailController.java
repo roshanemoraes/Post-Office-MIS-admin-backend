@@ -117,7 +117,7 @@ public class ReturnMailController {
     public ResponseEntity<String> updateAddress(@RequestBody AddressUpdateRequestDto dto){
         try {
             returnMailService.processAddressUpdate(dto);
-            return ResponseEntity.ok("Address updated successfully");
+            return ResponseEntity.status(200).body("Address Updated.");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating address: " + e.getMessage());
         }

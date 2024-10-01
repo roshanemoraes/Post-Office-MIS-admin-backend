@@ -1,6 +1,8 @@
 package com.sep.backend_noAuth.controller.Customer;
 
+import com.sep.backend_noAuth.dto.AddressRequest;
 import com.sep.backend_noAuth.dto.Customer.ProfileUpdateRequestDto;
+import com.sep.backend_noAuth.entity.Address;
 import com.sep.backend_noAuth.entity.Customer;
 import com.sep.backend_noAuth.entity.Mail;
 import com.sep.backend_noAuth.repository.AddressRepository;
@@ -10,6 +12,8 @@ import com.sep.backend_noAuth.service.CustomerService;
 import com.sep.backend_noAuth.service.MailService;
 //import com.sep.backend_noAuth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,4 +69,11 @@ public class CustomerController {
             return null;
         }
     }
+
+//    public ResponseEntity<String> validateNewAddress(@RequestBody AddressRequest addressRequest){
+//        Address newAddress = addressService.getAddressToValidate(addressRequest);
+//        if(newAddress!=null)
+//            return ResponseEntity.ok("valid address");
+//
+//    }
 }

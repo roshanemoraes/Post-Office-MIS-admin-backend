@@ -11,19 +11,18 @@ import org.springframework.data.annotation.TypeAlias;
 @Document(collection = "Mail")
 @TypeAlias("normal-post")
 public class NormalPost extends Mail {
-    private String testField;
+    private String senderType;
 
     public NormalPost() {
         super();
         this.setMailType("normal-post");
     }
-    public String getTestField() {
-        return testField;
+    public String getSenderType() {
+        return senderType;
     }
 
-    public void setTestField(String testField) {
-        this.testField = testField;
+    public void setSenderType(String senderType) {
+        this.senderType = senderType;
     }
-
 
 }

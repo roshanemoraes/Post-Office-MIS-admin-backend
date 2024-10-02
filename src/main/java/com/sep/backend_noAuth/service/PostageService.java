@@ -18,11 +18,26 @@ public class PostageService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public PostageNormalPosts findPostageByWeight(double weight){
+    public PostageNormalPosts findNormalPostPostageByWeight(double weight){
         Query query = new Query();
         query.addCriteria(Criteria.where("minWeight").lte(weight));
         query.addCriteria(Criteria.where("maxWeight").gte(weight));
         return mongoTemplate.findOne(query, PostageNormalPosts.class);
+    }public PostageCourierNormal findCourierNormalPostageByWeight(double weight){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("minWeight").lte(weight));
+        query.addCriteria(Criteria.where("maxWeight").gte(weight));
+        return mongoTemplate.findOne(query, PostageCourierNormal.class);
+    }public PostageParcelNormal findParcelNormalPostageByWeight(double weight){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("minWeight").lte(weight));
+        query.addCriteria(Criteria.where("maxWeight").gte(weight));
+        return mongoTemplate.findOne(query, PostageParcelNormal.class);
+    }public PostageParcelGov findParcelGovPostageByWeight(double weight){
+        Query query = new Query();
+        query.addCriteria(Criteria.where("minWeight").lte(weight));
+        query.addCriteria(Criteria.where("maxWeight").gte(weight));
+        return mongoTemplate.findOne(query, PostageParcelGov.class);
     }
     public List<PostageNormalPosts> getNormalPostageList() {
         return mongoTemplate.findAll(PostageNormalPosts.class);

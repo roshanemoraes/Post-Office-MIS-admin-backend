@@ -45,7 +45,7 @@ public class AddAddressController {
         // Map members from DTO to entity
         if (addAddressDto.getMembers() != null) {
             List<AddressMemberDto> members = addAddressDto.getMembers().stream()
-                    .map(memberDto -> new AddressMemberDto(memberDto.getCustomerId(), memberDto.getName()))
+                    .map(memberDto -> new AddressMemberDto("unreg", memberDto.getName()))
                     .collect(Collectors.toList());
             address.setMembers(members);  // Set the members
         }

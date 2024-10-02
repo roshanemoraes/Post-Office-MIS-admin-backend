@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MailSortService {
@@ -37,10 +35,13 @@ public class MailSortService {
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private DistanceMatrixService distanceMatrixService;
+
     @Value("${myapp.custom.zone.count}")
     private int zoneCount;
 
-    public void createDeliveryObject(String zone, int postmanId){
+    public void createDeliveryObject(String zone, int postmanId) throws Exception {
         List<Mail> mailList = mailService.getAllPendingInAreaMailsForZone(zone);
         int listLength = mailList.size();
         Delivery delivery = new Delivery();
@@ -57,6 +58,14 @@ public class MailSortService {
 
         List<DestinationDto> destinations = new ArrayList<>();
 
+        DestinationDto postOfficeDestination = new DestinationDto();
+        postOfficeDestination.setMailId("");
+        postOfficeDestination.setAddressId("PostOffice");
+        postOfficeDestination.setLat(7.265685);
+        postOfficeDestination.setLng(79.859109);
+
+        destinations.add(postOfficeDestination);
+
         for(int i=0; i<listLength; i++){
            Mail mail = mailList.get(i);
            DestinationDto destination = new DestinationDto();
@@ -70,8 +79,13 @@ public class MailSortService {
            destinations.add(destination);
         }
         delivery.setDestinations(destinations);
+        System.out.println("size:"+destinations.size());
+        delivery.setVisitOrder(distanceMatrixService.getOptimizedRoute(destinations));
+
         deliveryRepository.save(delivery);
     }
+
+
 
     public Delivery findDeliveryForDateAndPostmanId(String date, Long postmanId){
         Query query = new Query();

@@ -9,36 +9,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "Mail")
 @TypeAlias("normal-parcel")
 public class NormalParcelPost extends Mail {
-    private String height;
-    private String breadth;
-    private String length;
+    private String packageType;
 
     public NormalParcelPost() {
         super();
         this.setMailType("normal-parcel");
     }
-
-    public String getHeight() {
-        return height;
+    public String getPackageType() {
+        return packageType;
     }
 
-    public void setHeight(String height) {
-        this.height = height;
+    public void setPackageType(String packageType) {
+        this.packageType = packageType;
     }
 
-    public String getBreadth() {
-        return breadth;
-    }
 
-    public void setBreadth(String breadth) {
-        this.breadth = breadth;
-    }
-
-    public String getLength() {
-        return length;
-    }
-
-    public void setLength(String length) {
-        this.length = length;
-    }
 }

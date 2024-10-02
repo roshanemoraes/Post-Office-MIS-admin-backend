@@ -16,9 +16,24 @@ public class PostageController {
     @Autowired
     private PostageService postageService;
 
-    @GetMapping("/getPostage")
-    public PostageNormalPosts getPostageForWeight(@RequestParam Double weight){
-        PostageNormalPosts postage = postageService.findPostageByWeight(weight);
+    @GetMapping("/get/normal-post")
+    public PostageNormalPosts getNormalPostPostageForWeight(@RequestParam Double weight){
+        PostageNormalPosts postage = postageService.findNormalPostPostageByWeight(weight);
+        return postage;
+    }
+    @GetMapping("/get/courier-normal")
+    public PostageCourierNormal getCourierNormalPostageForWeight(@RequestParam Double weight){
+        PostageCourierNormal postage = postageService.findCourierNormalPostageByWeight(weight);
+        return postage;
+    }
+    @GetMapping("/get/parcel-normal")
+    public PostageParcelNormal getParcelNormalPostageForWeight(@RequestParam Double weight){
+        PostageParcelNormal postage = postageService.findParcelNormalPostageByWeight(weight);
+        return postage;
+    }
+    @GetMapping("/get/parcel-gov")
+    public PostageParcelGov getParcelGovPostageForWeight(@RequestParam Double weight){
+        PostageParcelGov postage = postageService.findParcelGovPostageByWeight(weight);
         return postage;
     }
     @GetMapping("/list/normal-post")

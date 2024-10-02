@@ -34,7 +34,7 @@ public class AddPostController {
     public ResponseEntity<String> createNormalPost(){
         Mail normalPost = new NormalPost();
         normalPost.setMailId(String.valueOf(sequenceGeneratorService.getSequenceNumber(Mail.SEQUENCE_NAME)));
-        normalPost.setStatus("Pending");
+        normalPost.setStatus("delivered");
         normalPost.setCustomerId("2");
         normalPost.setDateDelivered(null);
         normalPost.setDatePosted("2024-06-30");
@@ -54,7 +54,7 @@ public class AddPostController {
     public ResponseEntity<String> createNormalCourierPost(){
         Mail post = new NormalCourierPost();
         post.setMailId(String.valueOf(sequenceGeneratorService.getSequenceNumber(Mail.SEQUENCE_NAME)));
-        post.setStatus("Pending");
+        post.setStatus("pending");
         post.setCustomerId("2");
         post.setDateDelivered(null);
         post.setDatePosted("2024-06-30");

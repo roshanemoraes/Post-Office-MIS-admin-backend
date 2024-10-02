@@ -1,8 +1,6 @@
 package com.sep.backend_noAuth.controller.Customer;
 
 import com.sep.backend_noAuth.dto.Customer.ProfileUpdateRequestDto;
-import com.sep.backend_noAuth.dto.PostTypes.NormalPost;
-import com.sep.backend_noAuth.entity.Address;
 import com.sep.backend_noAuth.entity.Customer;
 import com.sep.backend_noAuth.entity.Mail;
 import com.sep.backend_noAuth.repository.AddressRepository;
@@ -14,7 +12,6 @@ import com.sep.backend_noAuth.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 

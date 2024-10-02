@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -24,5 +25,7 @@ public class PaymentService {
        query.addCriteria(Criteria.where("mailType").is(mailType));
        return mongoTemplate.find(query, Payment.class);
     }
+
+
 
 }

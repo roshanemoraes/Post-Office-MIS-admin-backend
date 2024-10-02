@@ -1,10 +1,14 @@
 package com.sep.backend_noAuth.controller.Receptionist;
 
+import com.sep.backend_noAuth.dto.PostTypes.GovParcelPostDto;
+import com.sep.backend_noAuth.dto.PostTypes.NormalCourierPostDto;
+import com.sep.backend_noAuth.dto.PostTypes.NormalParcelPostDto;
 import com.sep.backend_noAuth.dto.PostTypes.NormalPostDto;
 import com.sep.backend_noAuth.entity.Mail;
 import com.sep.backend_noAuth.entity.MailTypes.NormalCourierPost;
 import com.sep.backend_noAuth.entity.MailTypes.NormalPost;
 import com.sep.backend_noAuth.repository.MailRepository;
+import com.sep.backend_noAuth.service.MailRegistrationService;
 import com.sep.backend_noAuth.service.SequenceGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,23 +23,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/api/receptionist/post/add/")
+@RequestMapping("/api/receptionist/post/add")
 public class AddPostController {
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
     @Autowired
     private MailRepository mailRepository;
+    @Autowired
+    private MailRegistrationService mailRegistrationService;
     @PostMapping("/normal-post")
     public ResponseEntity<String> addNormalPost(@RequestBody NormalPostDto normalPostDto){
-        System.out.println(normalPostDto);
-        return ResponseEntity.ok("Successfully Saved.");
+        return mailRegistrationService.registerNormalPost(normalPostDto);
     }
+    @PostMapping("/normal-courier")
+    public ResponseEntity<String> addNormalCourierPost(@RequestBody NormalCourierPostDto normalCourierPostDto){
+        return mailRegistrationService.registerNormalCourierPost(normalCourierPostDto);
+    }
+    @PostMapping("/normal-parcel")
+    public ResponseEntity<String> addNormalParcelPost(@RequestBody NormalParcelPostDto normalParcelPostDto){
+        return mailRegistrationService.registerNormalParcelPost(normalParcelPostDto);
+    }
+    @PostMapping("/gov-parcel")
+    public ResponseEntity<String> addGovParcelPost(@RequestBody GovParcelPostDto govParcelPostDto){
+        return mailRegistrationService.registerGovParcelPost(govParcelPostDto);
+    }
+
     @PostMapping("/test/create/normal-post")
-    public ResponseEntity<String> createNormalPost(){
+    public ResponseEntity<String> createTestNormalPost(){
         Mail normalPost = new NormalPost();
         normalPost.setMailId(String.valueOf(sequenceGeneratorService.getSequenceNumber(Mail.SEQUENCE_NAME)));
-        normalPost.setStatus("Pending");
+        normalPost.setStatus("pending");
         normalPost.setCustomerId("2");
+        normalPost.setPostage(0.0);
         normalPost.setDateDelivered(null);
         normalPost.setDatePosted("2024-06-30");
         normalPost.setDestinationAddress("1,Pallansena South,Kochchikade");
@@ -46,17 +65,18 @@ public class AddPostController {
         normalPost.setIn_area(true);
         normalPost.setRecipientId("3");
         normalPost.setRecipientName(null);
-        ((NormalPost) normalPost).setTestField("Some Value");
+        ((NormalPost) normalPost).setSenderType("registered");
         mailRepository.save(normalPost);
         return ResponseEntity.ok("Test Normal Mail Successfully Saved.");
     }
     @PostMapping("/test/create/normal-courier")
-    public ResponseEntity<String> createNormalCourierPost(){
+    public ResponseEntity<String> createTestNormalCourierPost(){
         Mail post = new NormalCourierPost();
         post.setMailId(String.valueOf(sequenceGeneratorService.getSequenceNumber(Mail.SEQUENCE_NAME)));
-        post.setStatus("Pending");
+        post.setStatus("pending");
         post.setCustomerId("2");
         post.setDateDelivered(null);
+        post.setPostage(0.0);
         post.setDatePosted("2024-06-30");
         post.setDestinationAddress("1,Pallansena South,Kochchikade");
         post.setRecipientName("K.D.Kamal Perera");

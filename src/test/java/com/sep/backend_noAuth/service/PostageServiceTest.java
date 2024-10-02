@@ -31,7 +31,7 @@ class PostageServiceTest {
         when(mongoTemplate.findOne(any(Query.class), eq(PostageNormalPosts.class)))
                 .thenReturn(mockPost);
 
-        PostageNormalPosts result = postageService.findPostageByWeight(weight);
+        PostageNormalPosts result = postageService.findNormalPostPostageByWeight(weight);
 
         assertNotNull(result);
         assertEquals(200.0, result.getMinWeight());

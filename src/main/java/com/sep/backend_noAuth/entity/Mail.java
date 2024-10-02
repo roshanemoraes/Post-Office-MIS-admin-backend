@@ -48,4 +48,5 @@ public abstract class Mail {
     private String city;
     private String addressId;
     private Boolean in_area;
+    private double postage;
 }

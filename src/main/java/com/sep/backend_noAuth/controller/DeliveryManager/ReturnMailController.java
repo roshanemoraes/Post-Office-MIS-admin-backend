@@ -53,6 +53,7 @@ public class ReturnMailController {
             newMail.setMailId(String.valueOf(sequenceGeneratorService.getSequenceNumber(Mail.SEQUENCE_NAME)));
             newMail.setStatus("Pending");
             newMail.setCustomerId("PO-Return");
+            newMail.setPostage(0.0);
             newMail.setRecipientId(undeliverableMail.getCustomer_id());
             newMail.setMailType(undeliverableMail.getType());
             newMail.setDateDelivered("");
@@ -116,7 +117,7 @@ public class ReturnMailController {
     public ResponseEntity<String> updateAddress(@RequestBody AddressUpdateRequestDto dto){
         try {
             returnMailService.processAddressUpdate(dto);
-            return ResponseEntity.ok("Address updated successfully");
+            return ResponseEntity.status(200).body("Address Updated.");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error updating address: " + e.getMessage());
         }

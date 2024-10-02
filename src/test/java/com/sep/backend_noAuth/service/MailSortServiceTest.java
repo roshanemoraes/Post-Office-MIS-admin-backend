@@ -53,7 +53,7 @@ class MailSortServiceTest {
     }
 
     @Test
-    void createDeliveryObject() {
+    void createDeliveryObject() throws Exception {
         String zone = "Pallansena";
         int postmanId = 2;
         List<Mail> mailList = new ArrayList<>();

@@ -26,7 +26,7 @@ public class Customer {
     String nic;
     String addressId;
     String contactNumber;
-    String dataJoined;
+    String dateJoined;
     String password;
     String roles;
 }

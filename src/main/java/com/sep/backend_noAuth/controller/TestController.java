@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/test")
 public class TestController {
-    @GetMapping("/")
+    @GetMapping("")
     public String hello(){
-        return "Hello from the other side..";
+        return "This endpoint is for testing purpose.";
     }
 }

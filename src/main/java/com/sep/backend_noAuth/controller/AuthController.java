@@ -48,11 +48,15 @@ public class AuthController {
             Optional<UserInfo> userInfo = userInfoRepository.findByEmail(email);
             String name = null;
             String role = null;
+
+
             if(userInfo.isPresent()){
                 name = userInfo.get().getName();
                 role = userInfo.get().getRoles();
-                if(userInfo.get().getRoles().equals("ROLE_CUSTOMER") || userInfo.get().getRoles().equals("ROLE_POSTMAN"))
-                    throw new UsernameNotFoundException("Invalid user request");
+                System.out.println(name);
+                System.out.println(role);
+//                if(userInfo.get().getRoles().equals("ROLE_CUSTOMER") || userInfo.get().getRoles().equals("ROLE_POSTMAN"))
+//                    throw new UsernameNotFoundException("Invalid user request");
             }
             AuthResponseDto authResponseDto = new AuthResponseDto(name,email,role,"Authentication Success!");
             return ResponseEntity.ok(authResponseDto);

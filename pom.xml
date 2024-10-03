@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -15,6 +15,8 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
+		<jib-maven-plugin.version>3.2.0</jib-maven-plugin.version>
+		<docker.image.prefix>postofficemisregistry.azurecr.io</docker.image.prefix>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -29,11 +31,84 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>4.5.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.11.5</version>
+		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>de.flapdoodle.embed</groupId>
+			<artifactId>de.flapdoodle.embed.mongo</artifactId>
+			<version>3.0.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.stripe</groupId>
+			<artifactId>stripe-java</artifactId>
+			<version>20.62.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>mongodb</artifactId>
+			<version>1.17.6</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20230227</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<version>1.17.6</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>1.17.6</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.ortools</groupId>
+			<artifactId>ortools-java</artifactId>
+			<version>9.10.4067</version> <!-- Use the latest version -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -46,13 +121,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.google.ortools</groupId>
-			<artifactId>ortools-java</artifactId>
-			<version>9.10.4067</version>
-		</dependency>
-		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -62,6 +136,32 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<requiresUnpack>
+						<dependency>
+							<groupId>com.google.ortools</groupId>
+							<artifactId>ortools-java</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>com.google.ortools</groupId>
+							<artifactId>ortools-linux-x86-64</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>com.google.ortools</groupId>
+							<artifactId>ortools-darwin-x86-64</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>com.google.ortools</groupId>
+							<artifactId>ortools-win32-x86-64</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>com.google.ortools</groupId>
+							<artifactId>ortools-linux-aarch64</artifactId>
+						</dependency>
+						<dependency>
+							<groupId>com.google.ortools</groupId>
+							<artifactId>ortools-darwin-aarch64</artifactId>
+						</dependency>
+					</requiresUnpack>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -70,7 +170,19 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<artifactId>jib-maven-plugin</artifactId>
+				<groupId>com.google.cloud.tools</groupId>
+				<version>${jib-maven-plugin.version}</version>
+				<configuration>
+					<from>
+						<image>mcr.microsoft.com/openjdk/jdk:17-ubuntu</image>
+					</from>
+					<to>
+						<image>${docker.image.prefix}/backend</image>
+					</to>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>

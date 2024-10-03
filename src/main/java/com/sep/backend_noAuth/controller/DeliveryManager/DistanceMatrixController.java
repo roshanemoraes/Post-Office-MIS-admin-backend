@@ -1,7 +1,7 @@
 package com.sep.backend_noAuth.controller.DeliveryManager;
 
 import com.sep.backend_noAuth.dto.OptRoutePOST;
-import com.sep.backend_noAuth.entity.User;
+import com.sep.backend_noAuth.entity.UserInfo;
 import com.sep.backend_noAuth.service.DistanceMatrixService;
 import com.sep.backend_noAuth.service.TspService;
 import com.sep.backend_noAuth.service.UserService;
@@ -32,24 +32,43 @@ public class DistanceMatrixController {
         this.distanceMatrixService = distanceMatrixService;
     }
 
+
     @GetMapping("/distance")
-    public ResponseEntity<String> getDistanceMatrix(){
-        Map<String, Double> origin = new HashMap<>();
-        origin.put("lat", 40.6655101);
-        origin.put("lng", -73.89188969999998);
+    public ResponseEntity<String> getDistanceMatrix() {
+        Map<String, Double> location1 = new HashMap<>();
+        location1.put("lat", 40.6655101);
+        location1.put("lng", -73.89188969999998);
 
-        Map<String, Double> destination1 = new HashMap<>();
-        destination1.put("lat", 40.6905615);
-        destination1.put("lng", -73.9976592);
+        Map<String, Double> location2 = new HashMap<>();
+        location2.put("lat", 40.6905615);
+        location2.put("lng", -73.9976592);
 
-        Map<String, Double> destination2 = new HashMap<>();
-        destination2.put("lat", 40.712776);
-        destination2.put("lng", -74.005974);
+        Map<String, Double> location3 = new HashMap<>();
+        location3.put("lat", 40.712776);
+        location3.put("lng", -74.005974);
 
-        List<Map<String,Double>> destinations = Arrays.asList(destination1,destination2);
-        return distanceMatrixService.getDistanceMatrix(origin,destinations);
+        Map<String, Double> location4 = new HashMap<>();
+        location4.put("lat", 40.711073);
+        location4.put("lng", -74.007840);
+
+        List<Map<String, Double>> locations = Arrays.asList(location1, location2, location3, location4);
+
+        try {
+            int[][] adjacencyMatrix = distanceMatrixService.getSquareAdjacencyMatrix(locations);
+
+            StringBuilder matrixString = new StringBuilder();
+            for (int[] row : adjacencyMatrix) {
+                for (long distance : row) {
+                    matrixString.append(distance).append(" ");
+                }
+                matrixString.append("\n");
+            }
+            return ResponseEntity.ok(matrixString.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error generating distance matrix.");
+        }
     }
-
     @PostMapping("/post-matrix")
     public String getDistanceMatrix(@RequestBody OptRoutePOST optRoutePOST) throws Exception {
         int[][] matrix = optRoutePOST.getMatrix();
@@ -62,7 +81,7 @@ public class DistanceMatrixController {
     }
 
     @GetMapping("/list-postman")
-    public List<User> getListOfPostman(){
+    public List<UserInfo> getListOfPostman(){
         return userService.getListOfPostman();
     }
 

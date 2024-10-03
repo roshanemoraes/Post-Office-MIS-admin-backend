@@ -3,6 +3,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -12,7 +14,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "Customer")
 public class Customer {
-    String userId;
+
+    @Transient
+    public static final String SEQUENCE_NAME = "customer_sequence";
+
+    @Id
+    String id;
     String userName;
     String fullName;
     String email;

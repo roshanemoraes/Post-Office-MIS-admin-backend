@@ -1,5 +1,4 @@
 package com.sep.backend_noAuth.entity;
-import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,15 +14,15 @@ import lombok.NoArgsConstructor;
 @Builder
 
 @Document(collection = "Employee")
-public class User {
+public class UserInfo {
     @Id
     private String id;
-    private String userName;
-    private String fullName;
+    private String name;
     private String email;
-    private String nic;
-    private String contactNumber;
-    private Date dateJoined;
     private String password;
     private String roles;
+    private String fullName;
+    private String nic;
+    private String contactNumber;
+    private String dateJoined;
 }

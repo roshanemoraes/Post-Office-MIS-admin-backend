@@ -8,4 +8,5 @@ import java.util.List;
 public interface MailRepository extends MongoRepository<Mail,String> {
     List<Mail> findByCustomerId(String customerId);
     Mail findByMailId(String mailId);
+    List<Mail> findByDatePostedAndMailType(String datePosted, String mailType);
 }

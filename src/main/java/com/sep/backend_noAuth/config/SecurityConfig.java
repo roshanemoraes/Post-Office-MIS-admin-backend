@@ -51,6 +51,7 @@ public class SecurityConfig {
                         "/test/**",
                         "/api/notifications/**",
                         "/api/**",
+                        "/customer/authenticate",    //-------------------------
                         "/backup").permitAll()      //TODO: don't authenticate it. just pass it.requestMatchers("/admin/authenticate",
 //                        "/api/**",
 //                        "/postage/**",

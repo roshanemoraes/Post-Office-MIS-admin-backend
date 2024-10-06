@@ -32,7 +32,7 @@ public class PaymentGatewayController {
         PaymentGatewayOrderDto order = new PaymentGatewayOrderDto();
         order.setOrderId("1");
         order.setCustomerId("20");
-        order.setTotalAmount(4900L);
+        order.setTotalAmount(136L);
         PaymentGatewayResponseDto response = paymentGatewayService.createPaymentLink(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

@@ -1,6 +1,8 @@
 package com.sep.backend_noAuth.controller.Receptionist;
 
+import com.sep.backend_noAuth.dto.Receptionist.CustomerInfoDto;
 import com.sep.backend_noAuth.entity.Customer;
+import com.sep.backend_noAuth.repository.AddressRepository;
 import com.sep.backend_noAuth.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -21,10 +23,15 @@ public class CustomerInfoController {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Autowired
+    private AddressRepository addressRepository;
+
     @GetMapping("/")
-    public ResponseEntity<Customer> getCustomerInfo(@RequestParam String searchTerm, @RequestParam String searchType) {
+    public ResponseEntity<CustomerInfoDto> getCustomerInfo(@RequestParam String searchTerm, @RequestParam String searchType) {
         searchTerm = searchTerm.trim();
         Optional<Customer> customer = Optional.empty();
+        CustomerInfoDto dto = new CustomerInfoDto();
+
         if (searchType.equals("id")) {
 
             try {
@@ -49,6 +56,11 @@ public class CustomerInfoController {
                 throw new IllegalArgumentException("Invalid contact number format");
             }
         }
-        return customer.map(value -> ResponseEntity.status(HttpStatusCode.valueOf(200)).body(value)).orElseGet(() -> ResponseEntity.notFound().build());
+        if(customer.isPresent()){
+            dto.setCustomer(customer.get());
+            dto.setAddress(addressRepository.findByAddressId(customer.get().getAddressId()).getTextForm());
+            return ResponseEntity.ok(dto);
+        }
+        return ResponseEntity.notFound().build();
     }
 }

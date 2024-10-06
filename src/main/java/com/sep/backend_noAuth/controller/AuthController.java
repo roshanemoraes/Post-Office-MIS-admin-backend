@@ -48,9 +48,13 @@ public class AuthController {
             Optional<UserInfo> userInfo = userInfoRepository.findByEmail(email);
             String name = null;
             String role = null;
+
+
             if(userInfo.isPresent()){
                 name = userInfo.get().getName();
                 role = userInfo.get().getRoles();
+                System.out.println(name);
+                System.out.println(role);
                 if(userInfo.get().getRoles().equals("ROLE_CUSTOMER") || userInfo.get().getRoles().equals("ROLE_POSTMAN"))
                     throw new UsernameNotFoundException("Invalid user request");
             }
@@ -124,6 +128,42 @@ public class AuthController {
             AuthResponseMobileDto authResponseDto = new AuthResponseMobileDto(name,postmanId, email, role, "Authentication Success!", token);
             return ResponseEntity.ok(authResponseDto);
         } else {
+            throw new UsernameNotFoundException("Invalid user request");
+        }
+    }
+
+    @PostMapping("/customer/authenticate")
+    public ResponseEntity<?> authenticateAndGetForCustomer(@RequestBody AuthRequest authRequest, HttpServletResponse response){
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(),authRequest.getPassword()));
+        if(authentication.isAuthenticated()){
+            System.out.println("User valid!");
+            String token = jwtService.generateToken(authRequest.getUsername());
+
+            Cookie cookie = new Cookie("jwt",token);
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true);
+            cookie.setPath("/");
+            cookie.setMaxAge(24*60*60);
+            response.addCookie(cookie);
+
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String email = userDetails.getUsername();
+            Optional<UserInfo> userInfo = userInfoRepository.findByEmail(email);
+            String name = null;
+            String role = null;
+
+
+            if(userInfo.isPresent()){
+                name = userInfo.get().getName();
+                role = userInfo.get().getRoles();
+                System.out.println(name);
+                System.out.println(role);
+                if(!userInfo.get().getRoles().equals("ROLE_CUSTOMER") )
+                    throw new UsernameNotFoundException("Invalid user request");
+            }
+            AuthResponseDto authResponseDto = new AuthResponseDto(name,email,role,"Authentication Success!");
+            return ResponseEntity.ok(authResponseDto);
+        }else{
             throw new UsernameNotFoundException("Invalid user request");
         }
     }

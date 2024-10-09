@@ -51,6 +51,7 @@ public class SecurityConfig {
                         "/test/**",
                         "/api/notifications/**",
                         "/api/**",
+                        "/customer/authenticate",    //-------------------------
                         "/backup").permitAll()      //TODO: don't authenticate it. just pass it.requestMatchers("/admin/authenticate",
 //                        "/api/**",
 //                        "/postage/**",
@@ -60,7 +61,7 @@ public class SecurityConfig {
 //                        "/mobile/authenticate").permitAll()      //TODO: don't authenticate it. just pass it
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/**","/postage/**","/matrix/**").authenticated()
+                .requestMatchers("/api/**","/postage/**","/matrix/**").authenticated()   //TODO: authenticate it
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)   //TODO: because we don't want to keep anything in our cookies

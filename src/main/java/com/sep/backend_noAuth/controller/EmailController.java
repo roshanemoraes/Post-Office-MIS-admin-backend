@@ -24,4 +24,9 @@ public class EmailController {
                             String body){
         return emailService.sendMail(file, to, cc, subject, body);
     }
+
+    @GetMapping("/test")
+    public void testEmail(){
+//        emailService.sendMail(null,"roshanem1772@gmail.com",null,"Return Mail","Your Mail Got Undelivered.");
+    }
 }

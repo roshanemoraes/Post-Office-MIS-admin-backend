@@ -6,6 +6,7 @@ import com.sep.backend_noAuth.entity.MailTypes.NormalPost;
 import com.sep.backend_noAuth.entity.UndeliverableMail;
 import com.sep.backend_noAuth.repository.MailRepository;
 import com.sep.backend_noAuth.repository.UndeliverableMailRepository;
+import com.sep.backend_noAuth.service.EmailService;
 import com.sep.backend_noAuth.service.ReturnMailService;
 import com.sep.backend_noAuth.service.SequenceGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class ReturnMailController {
 
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/")
     public List<UndeliverableMail> getAllUndeliveredMails(){
@@ -63,6 +67,7 @@ public class ReturnMailController {
             mailRepository.save(newMail);
             undeliverableMail.setStatus("Return-to-Sender-Done");
             undeliverableMailRepository.save(undeliverableMail);
+//            emailService.sendMail(null,"roshanem1772@gmail.com",)
             return ResponseEntity.ok("Add to Mail Table Success.");
         }
         else{

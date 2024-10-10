@@ -27,7 +27,7 @@ public class PaymentGatewayCustomerServiceImpl implements PaymentGatewayService{
                         .builder()
                         .setQuantity(1L)
                         .setPriceData(SessionCreateParams.LineItem.PriceData.builder()
-                                .setCurrency("usd")
+                                .setCurrency("lkr")
                                 .setUnitAmount(order.getTotalAmount())
                                 .setProductData(SessionCreateParams.LineItem.PriceData.ProductData.builder().setName("Money Order").build())
                                 .build())

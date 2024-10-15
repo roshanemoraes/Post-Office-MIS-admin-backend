@@ -51,7 +51,8 @@ public class NotificationController {
     }
     @GetMapping("/api/notifications/unread/{customerId}")
     public List<Notification> getUnreadNotifications(@PathVariable String customerId) {
-        return notificationRepository.findByCustomerIdAndRead(customerId,false);
+//        return notificationRepository.findByCustomerIdAndRead(customerId,false);
+        return notificationRepository.findByCustomerIdAndType(customerId, "Address-update");
     }
     @GetMapping("/api/notifications/delivery-manager/today/{managerId}")
     public List<DeliveryManagerNotification> getDeliveryManagerNotification(@PathVariable String managerId){

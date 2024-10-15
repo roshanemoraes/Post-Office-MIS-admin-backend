@@ -15,4 +15,5 @@ public class AddressUpdateRequestDto {
     private String customerId;
     private String undeliverableId;
     private String newAddress;
+    private String notificationId;
 }

@@ -10,6 +10,7 @@ import com.sep.backend_noAuth.repository.DistributionRepository;
 import com.sep.backend_noAuth.repository.PostmanAssignmentRepository;
 import com.sep.backend_noAuth.service.MailService;
 import com.sep.backend_noAuth.service.MailSortService;
+import com.sep.backend_noAuth.service.PostmanAssignmentLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,9 @@ public class MailSortController {
     @Autowired
     private DistributionRepository distributionRepository;
 
+    @Autowired
+    private PostmanAssignmentLogService postmanAssignmentLogService;
+
     @GetMapping("/all-pending")
     public List<Mail> getALLPendingMails(){
         return mailService.getAllPendingMails();
@@ -49,6 +53,7 @@ public class MailSortController {
     }
     @GetMapping("/all-postman-assignments")
     public List<AssignDeliveryResDto> getAllPostmanAssignments(){
+        mailSortService.createUsualAssignmentPlanLog();
         List<PostmanAssignment> assignments = postmanAssignmentRepository.findAll();
         int assignmentCount = assignments.size();
         List<AssignDeliveryResDto> assignDeliveryResDtoList = new ArrayList<>(assignmentCount);
@@ -90,6 +95,16 @@ public class MailSortController {
         mailSortService.createDeliveryObject(assignDeliveryReqDto.getZone(), assignDeliveryReqDto.getPostmanId());
         return ResponseEntity.ok("Delivery Record Add Success.");
     }
+
+    @GetMapping("/get-assignment-plan/status")
+    public ResponseEntity<String> checkAssignmentPlanStatus(){
+        String statusType = postmanAssignmentLogService.getTodayAssignmentStatus();
+        return ResponseEntity.ok(statusType);
+    }
+//    @PostMapping("/create/usualAssignment-plan")
+//    public ResponseEntity<Boolean> createUsualAssignmentPlan(){
+//        return mailSortService.createUsualAssignmentPlanLog() ? ResponseEntity.ok(true) : ResponseEntity.ok(false);
+//    }
 
 
 }

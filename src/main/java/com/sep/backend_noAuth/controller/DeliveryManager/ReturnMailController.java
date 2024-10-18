@@ -1,17 +1,23 @@
 package com.sep.backend_noAuth.controller.DeliveryManager;
 
 import com.sep.backend_noAuth.dto.AddressUpdateRequestDto;
+import com.sep.backend_noAuth.entity.Customer;
 import com.sep.backend_noAuth.entity.Mail;
 import com.sep.backend_noAuth.entity.MailTypes.NormalPost;
 import com.sep.backend_noAuth.entity.UndeliverableMail;
+import com.sep.backend_noAuth.repository.CustomerRepository;
 import com.sep.backend_noAuth.repository.MailRepository;
 import com.sep.backend_noAuth.repository.UndeliverableMailRepository;
+import com.sep.backend_noAuth.service.EmailService;
 import com.sep.backend_noAuth.service.ReturnMailService;
 import com.sep.backend_noAuth.service.SequenceGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +38,12 @@ public class ReturnMailController {
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
 
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
     @GetMapping("/")
     public List<UndeliverableMail> getAllUndeliveredMails(){
         List<UndeliverableMail> list = undeliverableMailRepository.findByStatus("Undelivered");
@@ -48,22 +60,38 @@ public class ReturnMailController {
         UndeliverableMail undeliverableMail = undeliverableMailRepository.findByUndeliverableId(undeliverableId);
         Mail mail = mailRepository.findByMailId(undeliverableMail.getMailId());
 
-        if (mail!=null){
-            Mail newMail = new NormalPost();
-            newMail.setMailId(String.valueOf(sequenceGeneratorService.getSequenceNumber(Mail.SEQUENCE_NAME)));
-            newMail.setStatus("Pending");
-            newMail.setCustomerId("PO-Return");
-            newMail.setPostage(0.0);
-            newMail.setRecipientId(undeliverableMail.getCustomer_id());
-            newMail.setMailType(undeliverableMail.getType());
-            newMail.setDateDelivered("");
-            newMail.setDatePosted(String.valueOf(new Date()));
-            newMail.setRecipientName(mail.getRecipientName());
-            newMail.setDestinationAddress(mail.getDestinationAddress());
-            mailRepository.save(newMail);
-            undeliverableMail.setStatus("Return-to-Sender-Done");
-            undeliverableMailRepository.save(undeliverableMail);
-            return ResponseEntity.ok("Add to Mail Table Success.");
+        if(undeliverableMail != null){
+            Optional<Customer> customer = customerRepository.findById(undeliverableMail.getCustomer_id());
+            if(customer.isPresent()){
+                //Sending the email notification to the sender...
+                LocalDate currentDate = LocalDate.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+                String date = currentDate.format(formatter);
+
+                String mailBody = returnMailService.buildReturnToSenderEmail(customer.get().getFullName(),undeliverableId,mail.getDestinationAddress(),mail.getRecipientName(), date);
+                emailService.sendMail(new MultipartFile[0],"roshanem1772@gmail.com",new String[0],"Return To Sender",mailBody);
+
+                //Adding it as a new pending mail
+                if (mail!=null){
+                    Mail newMail = new NormalPost();
+                    newMail.setMailId(String.valueOf(sequenceGeneratorService.getSequenceNumber(Mail.SEQUENCE_NAME)));
+                    newMail.setStatus("Pending");
+                    newMail.setCustomerId("PO-Return");
+                    newMail.setPostage(0.0);
+                    newMail.setRecipientId(undeliverableMail.getCustomer_id());
+                    newMail.setMailType(undeliverableMail.getType());
+                    newMail.setDateDelivered("");
+                    newMail.setDatePosted(String.valueOf(new Date()));
+                    newMail.setRecipientName(mail.getRecipientName());
+                    newMail.setDestinationAddress(mail.getDestinationAddress());
+                    mailRepository.save(newMail);
+                    undeliverableMail.setStatus("Return-to-Sender-Done");
+                    undeliverableMailRepository.save(undeliverableMail);
+                    return ResponseEntity.ok("Add to Mail Table Success.");
+                }
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.notFound().build();
         }
         else{
             return ResponseEntity.notFound().build();
@@ -102,13 +130,36 @@ public class ReturnMailController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PostMapping("/add/address-update")
+    public ResponseEntity<String> addToAddressUpdate(@RequestBody String undeliverableId){
+        UndeliverableMail undeliverableMail = undeliverableMailRepository.findByUndeliverableId(undeliverableId);
+        if(undeliverableMail != null){
+            undeliverableMail.setStatus("Address-Update");
+            undeliverableMailRepository.save(undeliverableMail);
+            return ResponseEntity.ok("Successfully Updated.");
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+    }
     @PostMapping("/address-update/add/{undeliverableId}")
-    public ResponseEntity<String> addToAddressUpdate(@PathVariable String undeliverableId){
+    public ResponseEntity<String> processAddToAddressUpdate(@PathVariable String undeliverableId){
         UndeliverableMail undeliverableMail = undeliverableMailRepository.findByUndeliverableId(undeliverableId);
         if(undeliverableMail != null){
             undeliverableMail.setStatus("Address-Update-Pending");
-            undeliverableMailRepository.save(undeliverableMail);
-            return ResponseEntity.ok("Successfully Updated.");
+            Optional<Customer> customer = customerRepository.findById(undeliverableMail.getCustomer_id());
+            if(customer.isPresent()){
+                LocalDate currentDate = LocalDate.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+                String date = currentDate.format(formatter);
+
+                Mail mail = mailRepository.findByMailId(undeliverableMail.getMailId());
+                String mailBody = returnMailService.buildAddressUpdateEmail(customer.get().getFullName(),undeliverableId,mail.getDestinationAddress(),mail.getRecipientName(), date);
+
+                emailService.sendMail(new MultipartFile[0],customer.get().getEmail(),new String[0],"Address Update Request",mailBody);
+                undeliverableMailRepository.save(undeliverableMail);
+                return ResponseEntity.ok("Successfully Updated.");
+            }
+            return ResponseEntity.notFound().build();
         }else{
             return ResponseEntity.notFound().build();
         }

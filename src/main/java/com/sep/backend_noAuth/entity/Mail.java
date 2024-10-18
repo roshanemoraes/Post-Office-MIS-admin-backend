@@ -28,6 +28,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
         @JsonSubTypes.Type(value = NormalCourierPost.class, name = "normal-courier"),
         @JsonSubTypes.Type(value = GovernmentParcelPost.class, name = "gov-parcel"),
         @JsonSubTypes.Type(value = NormalParcelPost.class, name = "normal-parcel")
+
 })
 public abstract class Mail {
 

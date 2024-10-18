@@ -19,6 +19,7 @@ public class MailDetailsDto {
     private String recipientName;
     private String  zone;
     private String  city;
+    private String datePosted;
 
 
 }

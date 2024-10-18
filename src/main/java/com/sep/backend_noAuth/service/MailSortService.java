@@ -1,11 +1,12 @@
 package com.sep.backend_noAuth.service;
 
 import com.sep.backend_noAuth.dto.DestinationDto;
-import com.sep.backend_noAuth.entity.Address;
-import com.sep.backend_noAuth.entity.Delivery;
-import com.sep.backend_noAuth.entity.Mail;
+import com.sep.backend_noAuth.dto.PostmanAssignmentPlanDto;
+import com.sep.backend_noAuth.entity.*;
 import com.sep.backend_noAuth.repository.AddressRepository;
 import com.sep.backend_noAuth.repository.DeliveryRepository;
+import com.sep.backend_noAuth.repository.PostmanAssignmentLogRepository;
+import com.sep.backend_noAuth.repository.PostmanAssignmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -37,6 +38,12 @@ public class MailSortService {
 
     @Autowired
     private DistanceMatrixService distanceMatrixService;
+
+    @Autowired
+    private PostmanAssignmentLogRepository postmanAssignmentLogRepository;
+
+    @Autowired
+    private PostmanAssignmentRepository postmanAssignmentRepository;
 
     @Value("${myapp.custom.zone.count}")
     private int zoneCount;
@@ -82,10 +89,8 @@ public class MailSortService {
         System.out.println("size:"+destinations.size());
         delivery.setVisitOrder(distanceMatrixService.getOptimizedRoute(destinations));
 
-        deliveryRepository.save(delivery);
+//        deliveryRepository.save(delivery);
     }
-
-
 
     public Delivery findDeliveryForDateAndPostmanId(String date, Long postmanId){
         Query query = new Query();
@@ -93,6 +98,32 @@ public class MailSortService {
         query.addCriteria(Criteria.where("postmanId").is(String.valueOf(postmanId)));
         return mongoTemplate.findOne(query, Delivery.class);
     }
+    public boolean createUsualAssignmentPlanLog(){
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+        String date = currentDate.format(formatter);
 
+        Optional<PostmanAssignmentLog> hasAnActivatedPlan = postmanAssignmentLogRepository.findByDate(date);
+        if(hasAnActivatedPlan.isEmpty()){
+            PostmanAssignmentLog log = new PostmanAssignmentLog();
+            log.setLogId(String.valueOf(sequenceGeneratorService.getSequenceNumber(PostmanAssignmentLog.SEQUENCE_NAME)));
+            log.setDate(date);
+            log.setType("usual");
+            List<PostmanAssignmentPlanDto> plan = new ArrayList<>();
+            List<PostmanAssignment> usualAssignmentList = new ArrayList<>();
+            usualAssignmentList = postmanAssignmentRepository.findAll();
 
+            for (int i=0; i< usualAssignmentList.size(); i++){
+                PostmanAssignmentPlanDto dto = new PostmanAssignmentPlanDto();
+                dto.setPostmanId(String.valueOf(usualAssignmentList.get(i).getPostmanId()));
+                dto.setZone(usualAssignmentList.get(i).getZone());
+                plan.add(dto);
+            }
+            log.setPlan(plan);
+            postmanAssignmentLogRepository.save(log);
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

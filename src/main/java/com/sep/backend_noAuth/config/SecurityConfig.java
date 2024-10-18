@@ -92,6 +92,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:3000"); // Add your frontend URL here
+        config.addAllowedOrigin("https://yellow-desert-0878c820f.5.azurestaticapps.net");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);

@@ -22,10 +22,6 @@ public class AddressService {
     @Autowired
     private AddressRepository addressRepository;
 
-
-    //The [mongoTemplate.findOne] method is used to query the database.
-    // It returns a single document
-    // that matches the query criteria, mapping it to the Address class.
     @Autowired
     private MongoTemplate mongoTemplate;
 

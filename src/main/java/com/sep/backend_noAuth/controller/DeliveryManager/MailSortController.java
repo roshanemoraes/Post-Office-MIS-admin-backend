@@ -107,7 +107,7 @@ public class MailSortController {
         return ResponseEntity.ok(statusType);
     }
     @GetMapping("/test/route-optimization-latency")
-    public String testRouteOptimizationLatency(List<DestinationDto> destinations) throws Exception {
+    public String testRouteOptimizationLatency(@RequestBody List<DestinationDto> destinations) throws Exception {
         return distanceMatrixService.getOptimizedRoute(destinations);
     }
 //    @PostMapping("/create/usualAssignment-plan")

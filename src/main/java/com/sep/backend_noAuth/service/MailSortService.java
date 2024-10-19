@@ -88,8 +88,7 @@ public class MailSortService {
         delivery.setDestinations(destinations);
         System.out.println("size:"+destinations.size());
         delivery.setVisitOrder(distanceMatrixService.getOptimizedRoute(destinations));
-
-//        deliveryRepository.save(delivery);
+        deliveryRepository.save(delivery);
     }
 
     public Delivery findDeliveryForDateAndPostmanId(String date, Long postmanId){

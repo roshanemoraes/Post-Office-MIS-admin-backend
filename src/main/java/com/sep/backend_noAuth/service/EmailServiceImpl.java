@@ -22,12 +22,12 @@ public class EmailServiceImpl implements EmailService {
     public String sendMail(MultipartFile[] file, String to, String[] cc, String subject, String body) {
         try{
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             mimeMessageHelper.setFrom(fromEmail);
             mimeMessageHelper.setTo(to);
             mimeMessageHelper.setCc(cc);
             mimeMessageHelper.setSubject(subject);
-            mimeMessageHelper.setText(body);
+            mimeMessageHelper.setText(body,true);
 
             for(int i=0 ; i < file.length; i++){
                 mimeMessageHelper.addAttachment(

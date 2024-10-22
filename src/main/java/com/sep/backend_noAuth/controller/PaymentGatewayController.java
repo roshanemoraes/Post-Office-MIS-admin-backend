@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,11 +29,11 @@ public class PaymentGatewayController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<PaymentGatewayResponseDto> createOrder() throws StripeException {
+    public ResponseEntity<PaymentGatewayResponseDto> createOrder(@RequestParam String id, int amount) throws StripeException {
         PaymentGatewayOrderDto order = new PaymentGatewayOrderDto();
         order.setOrderId("1");
-        order.setCustomerId("20");
-        order.setTotalAmount(4900L);
+        order.setCustomerId(id);
+        order.setTotalAmount((long) (amount*100));
         PaymentGatewayResponseDto response = paymentGatewayService.createPaymentLink(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

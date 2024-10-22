@@ -10,10 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 
-public class AddressUpdateRequestDto {
-    private String mailId;
-    private String customerId;
-    private String undeliverableId;
-    private String newAddress;
-    private String notificationId;
+public class PostmanAssignmentPlanDto {
+    private String postmanId;
+    private String zone;
 }

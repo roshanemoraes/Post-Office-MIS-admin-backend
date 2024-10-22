@@ -2,14 +2,17 @@ package com.sep.backend_noAuth.controller.DeliveryManager;
 
 import com.sep.backend_noAuth.dto.AssignDeliveryReqDto;
 import com.sep.backend_noAuth.dto.AssignDeliveryResDto;
+import com.sep.backend_noAuth.dto.DestinationDto;
 import com.sep.backend_noAuth.entity.Delivery;
 import com.sep.backend_noAuth.entity.Distribution;
 import com.sep.backend_noAuth.entity.Mail;
 import com.sep.backend_noAuth.entity.PostmanAssignment;
 import com.sep.backend_noAuth.repository.DistributionRepository;
 import com.sep.backend_noAuth.repository.PostmanAssignmentRepository;
+import com.sep.backend_noAuth.service.DistanceMatrixService;
 import com.sep.backend_noAuth.service.MailService;
 import com.sep.backend_noAuth.service.MailSortService;
+import com.sep.backend_noAuth.service.PostmanAssignmentLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +38,12 @@ public class MailSortController {
     @Autowired
     private DistributionRepository distributionRepository;
 
+    @Autowired
+    private PostmanAssignmentLogService postmanAssignmentLogService;
+
+    @Autowired
+    private DistanceMatrixService distanceMatrixService;
+
     @GetMapping("/all-pending")
     public List<Mail> getALLPendingMails(){
         return mailService.getAllPendingMails();
@@ -49,6 +58,7 @@ public class MailSortController {
     }
     @GetMapping("/all-postman-assignments")
     public List<AssignDeliveryResDto> getAllPostmanAssignments(){
+        mailSortService.createUsualAssignmentPlanLog();
         List<PostmanAssignment> assignments = postmanAssignmentRepository.findAll();
         int assignmentCount = assignments.size();
         List<AssignDeliveryResDto> assignDeliveryResDtoList = new ArrayList<>(assignmentCount);
@@ -90,6 +100,20 @@ public class MailSortController {
         mailSortService.createDeliveryObject(assignDeliveryReqDto.getZone(), assignDeliveryReqDto.getPostmanId());
         return ResponseEntity.ok("Delivery Record Add Success.");
     }
+
+    @GetMapping("/get-assignment-plan/status")
+    public ResponseEntity<String> checkAssignmentPlanStatus(){
+        String statusType = postmanAssignmentLogService.getTodayAssignmentStatus();
+        return ResponseEntity.ok(statusType);
+    }
+    @GetMapping("/test/route-optimization-latency")
+    public String testRouteOptimizationLatency(@RequestBody List<DestinationDto> destinations) throws Exception {
+        return distanceMatrixService.getOptimizedRoute(destinations);
+    }
+//    @PostMapping("/create/usualAssignment-plan")
+//    public ResponseEntity<Boolean> createUsualAssignmentPlan(){
+//        return mailSortService.createUsualAssignmentPlanLog() ? ResponseEntity.ok(true) : ResponseEntity.ok(false);
+//    }
 
 
 }

@@ -76,6 +76,8 @@ public class AddressService {
             // After modifying the list, save the updated Address object back to the repository
             address.setMembers(members);  // Assuming Address has a setMembers() method
             addressRepository.save(address);
+            return addressOptional;
+
         } else {
             // Handle the case where the address is not found (e.g., log an error or throw an exception)
             System.out.println("Address with ID " + addressId + " not found.");

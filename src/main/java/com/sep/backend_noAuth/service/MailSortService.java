@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -44,6 +45,9 @@ public class MailSortService {
 
     @Autowired
     private PostmanAssignmentRepository postmanAssignmentRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @Value("${myapp.custom.zone.count}")
     private int zoneCount;
@@ -89,6 +93,7 @@ public class MailSortService {
         System.out.println("size:"+destinations.size());
         delivery.setVisitOrder(distanceMatrixService.getOptimizedRoute(destinations));
         deliveryRepository.save(delivery);
+        emailService.sendMail(new MultipartFile[0],"roshanem1772@gmail.com",new String[0],"Delivery Assigned!","You have been assigned a new delivery. Go to the mobile application to start the delivery.");
     }
 
     public Delivery findDeliveryForDateAndPostmanId(String date, Long postmanId){

@@ -31,6 +31,9 @@ public class ReturnMailService {
     @Autowired
     private NotificationRepository notificationRepository;
 
+    @Autowired
+    private AddressService addressService;
+
     public List<UndeliverableMail> getNewAndPendingAddressUpdateMails() {
         Query query = new Query();
         query.addCriteria(
@@ -47,6 +50,8 @@ public class ReturnMailService {
         UndeliverableMail returnMail = undeliverableMailRepository.findByUndeliverableId(dto.getUndeliverableId());
         returnMail.setStatus("Address-Update-Done");
         undeliverableMailRepository.save(returnMail);
+        Mail oldMail = mailRepository.findByMailId(dto.getMailId());
+        addressService.updateCustomerAddress(oldMail.getAddressId(),dto.getCustomerId());
         Optional<Notification> notification = notificationRepository.findByNotificationId(dto.getNotificationId());
         if(notification.isPresent()){
             notification.get().setType("Address-update-complete");
